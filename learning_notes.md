@@ -58,11 +58,21 @@ FRotationMatrix::GetUnitAxis\
 FTransform::GetUnitAxis\
 
 ## lesson 12. 
-Ctrl + K + O - switch between header and source files in VS
+Ctrl + K + O - switch between header and source files in VS\
 
-UCharacterMovementComponent::bOrientRotationToMovement
-UCharacterMovementComponent::RotationRate
-UCharacterMovementComponent::bConstrainToPlane
-UCharacterMovementComponent::bSnapToPlaneAtStart
+UCharacterMovementComponent::bOrientRotationToMovement\
+UCharacterMovementComponent::RotationRate\
+UCharacterMovementComponent::bConstrainToPlane\
+UCharacterMovementComponent::bSnapToPlaneAtStart\
 
-USpringArmComponent::bInherit[Pitch/Yaw/Roll]
+USpringArmComponent::bInherit[Pitch/Yaw/Roll]\
+
+## lesson 13. Highlight Interface
+UINTERFACE
+OriginalObject->GetClass()->ImplementsInterface(UInterface::StaticClass())
+OriginalObject->Implements<UInterface>()
+Cast<IInterface>(OriginalObject)
+
+TScriptInterface<IMyInterface>(MyObjectPtr)
+MyScriptInterface.GetObject()
+MyScriptInterface.GetInterface()
