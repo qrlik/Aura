@@ -53,3 +53,16 @@ ETriggerState - None/Ongoing/Triggered\
 ETriggerEvent::Started + [ETriggerState::Triggered] -> ETriggerEvent::Ongoing + ETriggerState::Triggered -> ETriggerState::Canceled/Completed\
 
 Project Settings -> Input -> Default Classes\
+
+FRotationMatrix::GetUnitAxis\
+FTransform::GetUnitAxis\
+
+## lesson 12. 
+Ctrl + K + O - switch between header and source files in VS
+
+UCharacterMovementComponent::bOrientRotationToMovement
+UCharacterMovementComponent::RotationRate
+UCharacterMovementComponent::bConstrainToPlane
+UCharacterMovementComponent::bSnapToPlaneAtStart
+
+USpringArmComponent::bInherit[Pitch/Yaw/Roll]
