@@ -23,14 +23,33 @@ Blendspace Player for template animation bp\
 Asset Override in child BP (View - Asset Override Editor) -> set Blendspace for Blendspace Player\
 
 ## lesson 9. Enhanced Input
-Input Action -> Input Mapping Context
+Input Action -> Input Mapping Context -> Player Mappable Input Config\
+Console -> *showdebug enhancedinput* - displays the available input action and axis mappings used by your project\
+Console -> *showdebug devices*\
+
+*Injecting Input*\
+Console -> *Input.+key* (key from InputCoreTypes.cpp)\
+UEnhancedPlayerInput::InjectInputForAction\
 
 ## lesson 10. PlayerController
-AActor::bReplicates
-APlayerController::DefaultMouseCursor
-APlayerController::GetLocalPlayer - each active player on the current client/listen server has a LocalPlayer
+AActor::bReplicates\
+APlayerController::DefaultMouseCursor\
+APlayerController::GetLocalPlayer - each active player on the current client/listen server has a LocalPlayer\
 
-ULocalPlayer::GetSubsystem
+ULocalPlayer::GetSubsystem\
+UEnhancedInputLocalPlayerSubsystem::AddMappingContext\
 
-FInputModeGameAndUI::SetLockMouseToViewportBehavior
-FInputModeGameAndUI::SetHideCursorDuringCapture
+FInputModeGameAndUI::SetLockMouseToViewportBehavior\
+FInputModeGameAndUI::SetHideCursorDuringCapture\
+
+## lesson 11. Movement Input
+CastChecked - Cast with crash test\
+
+FInputActionValue\
+UInputAction\
+UEnhancedInputComponent::BindAction\
+
+ETriggerState - None/Ongoing/Triggered\
+ETriggerEvent::Started + [ETriggerState::Triggered] -> ETriggerEvent::Ongoing + ETriggerState::Triggered -> ETriggerState::Canceled/Completed\
+
+Project Settings -> Input -> Default Classes\
