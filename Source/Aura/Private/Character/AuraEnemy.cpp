@@ -1,10 +1,15 @@
 // Copyright by Aura
 
-
 #include "Character/AuraEnemy.h"
 
-void AAuraEnemy::HighlightActorImpl() {
+#include "Aura/Aura.h"
+
+void AAuraEnemy::InitializeHighlight() {
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 }
 
-void AAuraEnemy::UnHighlightActorImpl() {
+void AAuraEnemy::EnableHighlightImpl(bool State) {
+	GetMesh()->SetRenderCustomDepth(State);
+	Weapon->SetRenderCustomDepth(State);
 }

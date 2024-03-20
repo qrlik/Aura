@@ -68,16 +68,23 @@ UCharacterMovementComponent::bSnapToPlaneAtStart\
 USpringArmComponent::bInherit[Pitch/Yaw/Roll]\
 
 ## lesson 13. Highlight Interface
-UINTERFACE
-OriginalObject->GetClass()->ImplementsInterface(UInterface::StaticClass())
-OriginalObject->Implements<UInterface>()
-Cast<IInterface>(OriginalObject)
+UINTERFACE\
+OriginalObject->GetClass()->ImplementsInterface(UInterface::StaticClass())\
+OriginalObject->Implements<UInterface>()\
+Cast<IInterface>(OriginalObject)\
 
-TScriptInterface<IMyInterface>(MyObjectPtr)
-MyScriptInterface.GetObject()
-MyScriptInterface.GetInterface()
+TScriptInterface<IMyInterface>(MyObjectPtr)\
+MyScriptInterface.GetObject()\
+MyScriptInterface.GetInterface()\
 
 ## lesson 14. Highlight Enemies
-APlayerController::PlayerTick - processes player input
-APlayerController::GetHitResultUnderCursor
-bTraceComplex - use complex collision to provide better precision
+APlayerController::PlayerTick - processes player input\
+APlayerController::GetHitResultUnderCursor\
+bTraceComplex - use complex collision to provide better precision\
+
+## lesson 15. Post Proccess Highlight
+PostProcessVolume - Post Process Volume Settings - Infinite Extent (Unbound)\
+*Project Settings* -> Engine -> Rendering -> Custom Depth-Stencil Pass -> Custom Depth-Stencil Pass\
+
+UPrimitiveComponent::SetRenderCustomDepth\
+UPrimitiveComponent::SetCustomDepthStencilValue\

@@ -2,16 +2,23 @@
 
 #include "Interaction/HighlightInterface.h"
 
+IHighlightInterface::IHighlightInterface() {
+	InitializeHighlight();
+}
+
+void IHighlightInterface::InitializeHighlight() {
+}
+
 void IHighlightInterface::HighlightActor() {
 	if (!bHighlighted) {
 		bHighlighted = true;
-		HighlightActorImpl();
+		EnableHighlightImpl(true);
 	}
 }
 
 void IHighlightInterface::UnHighlightActor() {
 	if (bHighlighted) {
 		bHighlighted = false;
-		UnHighlightActorImpl();
+		EnableHighlightImpl(false);
 	}
 }
