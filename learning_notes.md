@@ -76,3 +76,8 @@ Cast<IInterface>(OriginalObject)
 TScriptInterface<IMyInterface>(MyObjectPtr)
 MyScriptInterface.GetObject()
 MyScriptInterface.GetInterface()
+
+## lesson 14. Highlight Enemies
+APlayerController::PlayerTick - processes player input
+APlayerController::GetHitResultUnderCursor
+bTraceComplex - use complex collision to provide better precision

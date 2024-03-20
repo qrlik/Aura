@@ -3,8 +3,8 @@
 
 #include "Character/AuraEnemy.h"
 
-void AAuraEnemy::HighlightActor() {
+void AAuraEnemy::HighlightActorImpl() {
 }
 
-void AAuraEnemy::UnHighlightActor() {
+void AAuraEnemy::UnHighlightActorImpl() {
 }

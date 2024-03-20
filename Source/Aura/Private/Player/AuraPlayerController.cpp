@@ -5,9 +5,16 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/InputComponent.h"
+#include "Interaction/HighlightInterface.h"
 
 AAuraPlayerController::AAuraPlayerController() {
 	bReplicates = true;
+}
+
+void AAuraPlayerController::PlayerTick(float DeltaTime) {
+	Super::PlayerTick(DeltaTime);
+
+	CursorTrace();
 }
 
 void AAuraPlayerController::BeginPlay() {
@@ -21,6 +28,26 @@ void AAuraPlayerController::SetupInputComponent() {
 
 	auto* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+}
+
+void AAuraPlayerController::CursorTrace() {
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Camera, false, CursorHit);
+	if (!CursorHit.bBlockingHit) {
+		return;
+	}
+
+	const TScriptInterface<IHighlightInterface> HighlightCandidate = CursorHit.GetActor();
+	if (HighlightCandidate) {
+		HighlightCandidate.GetInterface()->HighlightActor();
+		if (HighlightedObject && HighlightCandidate != HighlightedObject) {
+			HighlightedObject.GetInterface()->UnHighlightActor();
+		}
+	}
+	else if (HighlightedObject) {
+		HighlightedObject.GetInterface()->UnHighlightActor();
+	}
+	HighlightedObject = HighlightCandidate;
 }
 
 void AAuraPlayerController::Move(const FInputActionValue& Value) {

@@ -11,7 +11,7 @@ UCLASS()
 class AURA_API AAuraEnemy : public AAuraCharacterBase, public IHighlightInterface {
 	GENERATED_BODY()
 
-public:
-	virtual void HighlightActor() override;
-	virtual void UnHighlightActor() override;
+protected:
+	virtual void HighlightActorImpl() override;
+	virtual void UnHighlightActorImpl() override;
 };

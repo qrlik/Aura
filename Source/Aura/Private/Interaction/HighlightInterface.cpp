@@ -1,6 +1,17 @@
 // Copyright by Aura
 
-
 #include "Interaction/HighlightInterface.h"
 
-// Add default functionality here for any IHighlightInterface functions that are not pure virtual.
+void IHighlightInterface::HighlightActor() {
+	if (!bHighlighted) {
+		bHighlighted = true;
+		HighlightActorImpl();
+	}
+}
+
+void IHighlightInterface::UnHighlightActor() {
+	if (bHighlighted) {
+		bHighlighted = false;
+		UnHighlightActorImpl();
+	}
+}

@@ -15,6 +15,13 @@ class AURA_API IHighlightInterface {
 	GENERATED_BODY()
 
 public:
-	virtual void HighlightActor() = 0;
-	virtual void UnHighlightActor() = 0;
+	void HighlightActor();
+	void UnHighlightActor();
+
+protected:
+	virtual void HighlightActorImpl() = 0;
+	virtual void UnHighlightActorImpl() = 0;
+
+private:
+	bool bHighlighted = false;
 };
