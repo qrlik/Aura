@@ -88,3 +88,14 @@ PostProcessVolume - Post Process Volume Settings - Infinite Extent (Unbound)\
 
 UPrimitiveComponent::SetRenderCustomDepth\
 UPrimitiveComponent::SetCustomDepthStencilValue\
+
+## lesson 17. Main Parts of GAS
+Ability System Component
+Attributes Set
+Gameplay Abilities -> Ability Task
+Gameplay Effects
+Gameplay Cues
+Gameplay Tags
+
+## lesson 18.
+AActor::NetUpdateFrequency - how often considered for replication
