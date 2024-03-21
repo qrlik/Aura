@@ -89,6 +89,10 @@ PostProcessVolume - Post Process Volume Settings - Infinite Extent (Unbound)\
 UPrimitiveComponent::SetRenderCustomDepth\
 UPrimitiveComponent::SetCustomDepthStencilValue\
 
+<br><br>
+
+# 3. Intro to the Gameplay Ability System
+
 ## lesson 17. Main Parts of GAS
 Ability System Component\
 Attributes Set\
@@ -102,11 +106,11 @@ AActor::NetUpdateFrequency - how often considered for replication\
 
 ## lesson 22. Replication Mode
 UAbilitySystemComponent::SetReplicationMode\
-EGameplayEffectReplicationMode::Full - Single Player
-EGameplayEffectReplicationMode::Mixed - Multiplayer, player controlled Actors
-EGameplayEffectReplicationMode::Minimal - Multiplayer, AI controlled Actors
+EGameplayEffectReplicationMode::Full - Single Player\
+EGameplayEffectReplicationMode::Mixed - Multiplayer, player controlled Actors\
+EGameplayEffectReplicationMode::Minimal - Multiplayer, AI controlled Actors\
 
-*Note*: for EGameplayEffectReplicationMode::Mixed OwnerPawn::GetOwner must return Controller.
+*Note*: for EGameplayEffectReplicationMode::Mixed OwnerPawn::GetOwner must return Controller.\
 
 ## lesson 23. Ability Actor Info
 UAbilitySystemComponent::OwnerActor\
@@ -123,3 +127,12 @@ OnRep_PlayerState - for client if ASC on PlayerState\
 
 *AI Controller situation:*\
 BeginPlay - server/client if ASC on Pawn\
+
+<br><br>
+
+# 4. Attributes
+
+## lesson 24. Attributes
+FGameplayAttributeData -> UAttributeSet
+GameplayEffect -> Attribute change -> Prediction (client did, server can roll back)
+Min/Max Attributes Values should be also have separate FGameplayAttributeData
