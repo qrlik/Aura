@@ -99,3 +99,7 @@ Gameplay Tags
 
 ## lesson 18.
 AActor::NetUpdateFrequency - how often considered for replication
+
+## lesson 22. Replication Mode
+UAbilitySystemComponent::SetReplicationMode
+EGameplayEffectReplicationMode
