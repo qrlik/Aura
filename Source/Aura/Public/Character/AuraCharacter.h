@@ -12,4 +12,6 @@ class AURA_API AAuraCharacter : public AAuraCharacterBase {
 
 public:
 	AAuraCharacter();
+
+	virtual void OnPlayerStateChanged(APlayerState* NewPlayerState, APlayerState* OldPlayerState) override;
 };

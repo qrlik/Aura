@@ -15,6 +15,7 @@ public:
 	AAuraEnemy();
 
 protected:
+	virtual void BeginPlay() override;
 	virtual void InitializeHighlight() override;
 
 	virtual void EnableHighlightImpl(bool State) override;

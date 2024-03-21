@@ -90,16 +90,36 @@ UPrimitiveComponent::SetRenderCustomDepth\
 UPrimitiveComponent::SetCustomDepthStencilValue\
 
 ## lesson 17. Main Parts of GAS
-Ability System Component
-Attributes Set
-Gameplay Abilities -> Ability Task
-Gameplay Effects
-Gameplay Cues
-Gameplay Tags
+Ability System Component\
+Attributes Set\
+Gameplay Abilities -> Ability Task\
+Gameplay Effects\
+Gameplay Cues\
+Gameplay Tags\
 
 ## lesson 18.
-AActor::NetUpdateFrequency - how often considered for replication
+AActor::NetUpdateFrequency - how often considered for replication\
 
 ## lesson 22. Replication Mode
-UAbilitySystemComponent::SetReplicationMode
-EGameplayEffectReplicationMode
+UAbilitySystemComponent::SetReplicationMode\
+EGameplayEffectReplicationMode::Full - Single Player
+EGameplayEffectReplicationMode::Mixed - Multiplayer, player controlled Actors
+EGameplayEffectReplicationMode::Minimal - Multiplayer, AI controlled Actors
+
+*Note*: for EGameplayEffectReplicationMode::Mixed OwnerPawn::GetOwner must return Controller.
+
+## lesson 23. Ability Actor Info
+UAbilitySystemComponent::OwnerActor\
+UAbilitySystemComponent::AvatarActor\
+
+UAbilitySystemComponent::InitAbilityActorInfo\
+
+*Player Controller situation:*\
+PossessedBy\ - AController::Possess call only with *Authority*
+
+AcknowledgePossesion - for client if ASC on Pawn\
+OnRep_PlayerState - for client if ASC on PlayerState\
+*Note*: why must call InitAbilityActorInfo on client if Owner and Avatar field have replication from server?
+
+*AI Controller situation:*\
+BeginPlay - server/client if ASC on Pawn\
