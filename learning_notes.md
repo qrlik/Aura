@@ -106,9 +106,9 @@ AActor::NetUpdateFrequency - how often considered for replication\
 
 ## lesson 22. Replication Mode
 UAbilitySystemComponent::SetReplicationMode\
-EGameplayEffectReplicationMode::Full - Single Player\
-EGameplayEffectReplicationMode::Mixed - Multiplayer, player controlled Actors\
-EGameplayEffectReplicationMode::Minimal - Multiplayer, AI controlled Actors\
+EGameplayEffectReplicationMode::Full - Single Player. GameplayEffect, GameplayTags, GameplayCues\
+EGameplayEffectReplicationMode::Mixed - Multiplayer, player controlled Actors. GameplayEffects(AutonomousProxy/Authority), GameplayTags, GameplayCues\
+EGameplayEffectReplicationMode::Minimal - Multiplayer, AI controlled Actors. GameplayTags, GameplayCues\
 
 *Note*: for EGameplayEffectReplicationMode::Mixed OwnerPawn::GetOwner must return Controller.\
 
@@ -133,6 +133,53 @@ BeginPlay - server/client if ASC on Pawn\
 # 4. Attributes
 
 ## lesson 24. Attributes
-FGameplayAttributeData -> UAttributeSet
-GameplayEffect -> Attribute change -> Prediction (client did, server can roll back)
-Min/Max Attributes Values should be also have separate FGameplayAttributeData
+FGameplayAttributeData -> UAttributeSet -> UAbilitySystemComponent\
+GameplayEffect -> Attribute change -> Prediction (client did, server can roll back)\
+Min/Max Attributes Values should be also have separate FGameplayAttributeData\
+
+## lesson 25. Attributes Add
+UPROPERTY(ReplicatedUsing = OnRep_[PropertyName])\
+
+UFUNCTION()\
+void OnRep_[PropertyName]([const PropertyType& OldValue]);\
+
+*GAMEPLAYATTRIBUTE_REPNOTIFY(AttributeSetClassType, PropertyName, OldValue);*\
+This is a helper macro that can be used in RepNotify functions to handle attributes that will be predictively modified by clients.\
+*Note*: Is this help with server rollback?\
+
+UObject::GetLifetimeReplicatedProps\
+DOREPLIFETIME[_CONDITION][_NOTIFY](Class, Var, [ConditionType], [NotifyType])\
+
+**ELifetimeCondition**
+*COND_InitialOnly* - only once on the initial on client\
+*COND_OwnerOnly* - only send to the actor's owner\
+*COND_SkipOwner* - send to every connection EXCEPT the owner\
+*COND_SimulatedOnly* - send only to simulated actors\
+*COND_AutonomousOnly* - send only to autonomous actors\
+*COND_SimulatedOrPhysics* - send to simulated or bRepPhysics actors\
+*COND_InitialOrOwner*\
+*COND_Custom* - no particular condition, but wants the ability to toggle on/off via SetCustomIsActiveOverride\
+*COND_ReplayOnly* - This property will only send to the replay connection\
+*COND_ReplayOrOwner*\
+*COND_SimulatedOnlyNoReplay*\
+*COND_SimulatedOrPhysicsNoReplay*\
+*COND_SkipReplay* - not send to the replay connection\
+*COND_Dynamic* - override the condition at runtime. Defaults to always replicate until you override it to a new condition.\
+*COND_Never* - will never be replicated\
+*COND_NetGroup* - replicate to connections that are part of the same group the subobject is registered to. Not usable on properties.\
+
+*Note*: actor owner mean only authority or also autonomous? what benefit from replication only to authority on server?\
+
+**ELifetimeRepNotifyCondition**\
+*REPNOTIFY_OnChanged* - default\
+*REPNOTIFY_Always*\
+
+## lesson 26. Attributes Accessors
+Ctrl + M + A/L/O - collapses in VS
+GAMEPLAYATTRIBUTE_PROPERTY_GETTER
+GAMEPLAYATTRIBUTE_VALUE_GETTER/SETTER/INITTER
+
+Console -> **showdebug abilitysystem**
+PgDown/PgUp 
+
+## lesson 27. Effect Actor
