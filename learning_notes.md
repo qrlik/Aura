@@ -123,7 +123,7 @@ PossessedBy\ - AController::Possess call only with *Authority*
 
 AcknowledgePossesion - for client if ASC on Pawn\
 OnRep_PlayerState - for client if ASC on PlayerState\
-*Note*: why must call InitAbilityActorInfo on client if Owner and Avatar field have replication from server?
+*Note*: why must call InitAbilityActorInfo on client if Owner and Avatar field have replication from server?\
 
 *AI Controller situation:*\
 BeginPlay - server/client if ASC on Pawn\
@@ -175,11 +175,13 @@ DOREPLIFETIME[_CONDITION][_NOTIFY](Class, Var, [ConditionType], [NotifyType])\
 *REPNOTIFY_Always*\
 
 ## lesson 26. Attributes Accessors
-Ctrl + M + A/L/O - collapses in VS
-GAMEPLAYATTRIBUTE_PROPERTY_GETTER
-GAMEPLAYATTRIBUTE_VALUE_GETTER/SETTER/INITTER
+Ctrl + M + A/L/O - collapses in VS\
+GAMEPLAYATTRIBUTE_PROPERTY_GETTER\
+GAMEPLAYATTRIBUTE_VALUE_GETTER/SETTER/INITTER\
 
-Console -> **showdebug abilitysystem**
-PgDown/PgUp 
+Console -> **showdebug abilitysystem**\
+PgDown/PgUp\
 
 ## lesson 27. Effect Actor
+UAbilitySystemComponent::GetSet<T>
+UAbilitySystemComponent::GetAttributeSet
