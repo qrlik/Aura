@@ -183,5 +183,9 @@ Console -> **showdebug abilitysystem**\
 PgDown/PgUp\
 
 ## lesson 27. Effect Actor
-UAbilitySystemComponent::GetSet<T>
-UAbilitySystemComponent::GetAttributeSet
+UAbilitySystemComponent::GetSet<T>\
+UAbilitySystemComponent::GetAttributeSet\
+
+## lesson 28. Game UI Architecture
+View (Widgets) -> Widget [Data] Controller -> Data Model\
+*Note*: widget controller not controll widgets, so better name would be with Data word\
