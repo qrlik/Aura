@@ -189,3 +189,7 @@ UAbilitySystemComponent::GetAttributeSet\
 ## lesson 28. Game UI Architecture
 View (Widgets) -> Widget [Data] Controller -> Data Model\
 *Note*: widget controller not controll widgets, so better name would be with Data word\
+
+## lesson 30. 
+Event Graph - *Collapse to Function*
+Variable - Category
