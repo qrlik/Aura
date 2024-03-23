@@ -198,11 +198,15 @@ View (Widgets) -> Widget [Data] Controller -> Data Model\
 Event Graph - *Collapse to Function*\
 Variable - Category\
 
-## lesson 33. 
+## lesson 32. 
 APlayerController::GetHUD\
 
-## lesson 34.
+## lesson 33. 
 UPROPERTY(*BlueprintAssignable*) - multicast Delegates only. Property should be exposed for assigning in blueprints.\
 
 UCLASS(*BlueprintType*) - can be used for variables in blueprints\
 UCLASS(*Blueprintable*) - acceptable for creating blueprints\
+
+## lesson 34. Listining to attributes changes\
+UAbilitySystemComponent::GetGameplayAttributeValueChangeDelegate\
+FOnAttributeChangeData\

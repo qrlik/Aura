@@ -21,7 +21,7 @@ void AAuraHUD::UpdateOverlay() {
 		auto* WidgetDataController = GetOverlayWidgetDataController(Params);
 
 		OverlayWidget->SetWidgetDataController(WidgetDataController);
-		WidgetDataController->BroadcastInitialValues();
+		WidgetDataController->Initialize();
 	}
 }
 

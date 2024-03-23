@@ -32,19 +32,21 @@ void AAuraCharacter::UpdateGameplayAbilities() {
 		AbilitySystemComponent->SetAvatarActor(nullptr);
 	}
 
-	const auto* State = GetPlayerState();
-	if (!State) {
+	if (const auto* State = GetPlayerState<AAuraPlayerState>()) {
+		AbilitySystemComponent = State->GetAbilitySystemComponent();
+		AbilitySystemComponent->SetAvatarActor(this);
+		AttributeSet = State->GetAttributeSet();
+	}
+	else {
 		AbilitySystemComponent = nullptr;
 		AttributeSet = nullptr;
-	}
-	else if (const auto* AuraPlayerState = Cast<AAuraPlayerState>(State)) {
-		AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
-		AbilitySystemComponent->SetAvatarActor(this);
-		AttributeSet = AuraPlayerState->GetAttributeSet();
 	}
 }
 
 void AAuraCharacter::UpdateHUD() const {
+	if (!GetPlayerState<AAuraPlayerState>()) {
+		return;
+	}
 	if (const auto* PlayerController = GetController<AAuraPlayerController>()) {
 		if (auto* HUD = PlayerController->GetHUD<AAuraHUD>()) {
 			HUD->UpdateOverlay();

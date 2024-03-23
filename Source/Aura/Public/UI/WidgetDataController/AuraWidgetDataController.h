@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AttributeSet.h"
 #include "UObject/NoExportTypes.h"
 #include "AuraWidgetDataController.generated.h"
 
-class UAuraAbilitySystemComponent;
 class UAuraAttributeSet;
 class AAuraPlayerState;
 class AAuraPlayerController;
@@ -36,9 +37,20 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetDataControllerParams(const FWidgetDataControllerParams& Params);
 
-	virtual void BroadcastInitialValues();
+	void Initialize();
 
 protected:
+	template <typename ClassType>
+	void BindAttributeValueChange(FGameplayAttribute Attribute, void (ClassType::*Function)(const FOnAttributeChangeData&) const) {
+		check(AbilitySystemComponent);
+		auto& Delegate = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute);
+		check(!Delegate.IsBoundToObject(this));
+		Delegate.AddUObject(CastChecked<ClassType>(this), Function);
+	}
+
+	virtual void BroadcastInitialValues();
+	virtual void BindCallbacksToDependencies();
+
 	UPROPERTY()
 	TObjectPtr<AAuraPlayerController> PlayerController;
 	UPROPERTY()

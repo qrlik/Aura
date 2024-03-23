@@ -25,5 +25,13 @@ void UAuraWidgetDataController::SetWidgetDataControllerParams(const FWidgetDataC
 	AttributeSet = Params.AttributeSet;
 }
 
+void UAuraWidgetDataController::Initialize() {
+	BindCallbacksToDependencies();
+	BroadcastInitialValues();
+}
+
 void UAuraWidgetDataController::BroadcastInitialValues() {
+}
+
+void UAuraWidgetDataController::BindCallbacksToDependencies() {
 }
