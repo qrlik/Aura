@@ -14,4 +14,8 @@ public:
 	AAuraCharacter();
 
 	virtual void OnPlayerStateChanged(APlayerState* NewPlayerState, APlayerState* OldPlayerState) override;
+
+private:
+	void UpdateGameplayAbilities();
+	void UpdateHUD() const;
 };

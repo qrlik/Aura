@@ -193,3 +193,6 @@ View (Widgets) -> Widget [Data] Controller -> Data Model\
 ## lesson 30. 
 Event Graph - *Collapse to Function*
 Variable - Category
+
+## lesson 33. 
+APlayerController::GetHUD

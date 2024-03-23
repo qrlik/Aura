@@ -14,13 +14,12 @@ class AURA_API UAuraUserWidget : public UUserWidget {
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void SetWidgetController(UAuraWidgetDataController* Controller);
+	void SetWidgetDataController(UAuraWidgetDataController* Controller);
 
 protected:
 	UFUNCTION(BlueprintImplementableEvent)
-	void OnWidgetControllerSet();
+	void OnWidgetDataControllerSet();
 
-private:
-	UPROPERTY()
-	TObjectPtr<UAuraWidgetDataController> WidgetController;
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UAuraWidgetDataController> WidgetDataController;
 };

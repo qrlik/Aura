@@ -4,7 +4,9 @@
 
 #include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
+#include "UI/HUD/AuraHUD.h"
 
 AAuraCharacter::AAuraCharacter() {
 	GetCharacterMovement()->bOrientRotationToMovement = true;
@@ -21,17 +23,31 @@ void AAuraCharacter::OnPlayerStateChanged(APlayerState* NewPlayerState, APlayerS
 	if (NewPlayerState == OldPlayerState) {
 		return;
 	}
+	UpdateGameplayAbilities();
+	UpdateHUD();
+}
+
+void AAuraCharacter::UpdateGameplayAbilities() {
 	if (AbilitySystemComponent) {
 		AbilitySystemComponent->SetAvatarActor(nullptr);
 	}
 
-	if (!NewPlayerState) {
+	const auto* State = GetPlayerState();
+	if (!State) {
 		AbilitySystemComponent = nullptr;
 		AttributeSet = nullptr;
 	}
-	else if (const auto* AuraPlayerState = Cast<AAuraPlayerState>(NewPlayerState)) {
+	else if (const auto* AuraPlayerState = Cast<AAuraPlayerState>(State)) {
 		AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 		AbilitySystemComponent->SetAvatarActor(this);
 		AttributeSet = AuraPlayerState->GetAttributeSet();
+	}
+}
+
+void AAuraCharacter::UpdateHUD() const {
+	if (const auto* PlayerController = GetController<AAuraPlayerController>()) {
+		if (auto* HUD = PlayerController->GetHUD<AAuraHUD>()) {
+			HUD->UpdateOverlay();
+		}
 	}
 }

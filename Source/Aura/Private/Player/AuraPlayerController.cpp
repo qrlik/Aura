@@ -76,9 +76,8 @@ void AAuraPlayerController::SetupInput() {
 	InputModeData.SetHideCursorDuringCapture(false);
 	SetInputMode(InputModeData);
 
-	auto* InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(InputSubsystem);
-	check(AuraContext);
-
-	InputSubsystem->AddMappingContext(AuraContext, 0);
+	if (auto* InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer())) {
+		check(AuraContext);
+		InputSubsystem->AddMappingContext(AuraContext, 0);
+	}
 }

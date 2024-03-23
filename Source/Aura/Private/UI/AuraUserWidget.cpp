@@ -2,9 +2,9 @@
 
 #include "UI/AuraUserWidget.h"
 
-void UAuraUserWidget::SetWidgetController(UAuraWidgetDataController* Controller) {
+void UAuraUserWidget::SetWidgetDataController(UAuraWidgetDataController* Controller) {
 	if (Controller) {
-		WidgetController = Controller;
-		OnWidgetControllerSet();
+		WidgetDataController = Controller;
+		OnWidgetDataControllerSet();
 	}
 }
