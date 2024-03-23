@@ -28,6 +28,9 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UAuraUserWidget> OverlayWidgetClass;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UOverlayWidgetDataController> OverlayWidgetDataControllerClass;
+
 	UPROPERTY()
 	TObjectPtr<UAuraUserWidget> OverlayWidget;
 

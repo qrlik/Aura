@@ -28,7 +28,7 @@ struct FWidgetDataControllerParams {
 	TObjectPtr<UAuraAttributeSet> AttributeSet;
 };
 
-UCLASS()
+UCLASS(Abstract)
 class AURA_API UAuraWidgetDataController : public UObject {
 	GENERATED_BODY()
 
@@ -36,7 +36,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetDataControllerParams(const FWidgetDataControllerParams& Params);
 
-private:
+	virtual void BroadcastInitialValues();
+
+protected:
 	UPROPERTY()
 	TObjectPtr<AAuraPlayerController> PlayerController;
 	UPROPERTY()

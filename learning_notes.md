@@ -10,7 +10,7 @@ General - Automatically Compile Newly Added C++ Classes\
 Copyright Notice\
 
 ## lesson 6. Character classes
-UCLASS(Abstract) - Class is abstract and can't be instantiated directly\
+UCLASS(*Abstract*) - Class is abstract and can't be instantiated directly\
 
 ## lesson 7.
 *TObjectPtr*\
@@ -138,7 +138,7 @@ GameplayEffect -> Attribute change -> Prediction (client did, server can roll ba
 Min/Max Attributes Values should be also have separate FGameplayAttributeData\
 
 ## lesson 25. Attributes Add
-UPROPERTY(ReplicatedUsing = OnRep_[PropertyName])\
+UPROPERTY(*ReplicatedUsing* = OnRep_[PropertyName])\
 
 UFUNCTION()\
 void OnRep_[PropertyName]([const PropertyType& OldValue]);\
@@ -186,13 +186,23 @@ PgDown/PgUp\
 UAbilitySystemComponent::GetSet<T>\
 UAbilitySystemComponent::GetAttributeSet\
 
+<br><br>
+
+# 5. Game UI
+
 ## lesson 28. Game UI Architecture
 View (Widgets) -> Widget [Data] Controller -> Data Model\
 *Note*: widget controller not controll widgets, so better name would be with Data word\
 
 ## lesson 30. 
-Event Graph - *Collapse to Function*
-Variable - Category
+Event Graph - *Collapse to Function*\
+Variable - Category\
 
 ## lesson 33. 
-APlayerController::GetHUD
+APlayerController::GetHUD\
+
+## lesson 34.
+UPROPERTY(*BlueprintAssignable*) - multicast Delegates only. Property should be exposed for assigning in blueprints.\
+
+UCLASS(*BlueprintType*) - can be used for variables in blueprints\
+UCLASS(*Blueprintable*) - acceptable for creating blueprints\

@@ -8,7 +8,8 @@
 
 UOverlayWidgetDataController* AAuraHUD::GetOverlayWidgetDataController(const FWidgetDataControllerParams& Params) {
 	if (!OverlayWidgetDataController) {
-		OverlayWidgetDataController = NewObject<UOverlayWidgetDataController>(this, UOverlayWidgetDataController::StaticClass());
+		checkf(OverlayWidgetDataControllerClass, TEXT("Overlay Widget Data Controller Class uninitialized"));
+		OverlayWidgetDataController = NewObject<UOverlayWidgetDataController>(this, OverlayWidgetDataControllerClass);
 	}
 	OverlayWidgetDataController->SetWidgetDataControllerParams(Params);
 	return OverlayWidgetDataController;
@@ -17,7 +18,10 @@ UOverlayWidgetDataController* AAuraHUD::GetOverlayWidgetDataController(const FWi
 void AAuraHUD::UpdateOverlay() {
 	if (OverlayWidget) {
 		const FWidgetDataControllerParams Params{ Cast<AAuraPlayerController>(GetOwningPlayerController()) };
-		OverlayWidget->SetWidgetDataController(GetOverlayWidgetDataController(Params));
+		auto* WidgetDataController = GetOverlayWidgetDataController(Params);
+
+		OverlayWidget->SetWidgetDataController(WidgetDataController);
+		WidgetDataController->BroadcastInitialValues();
 	}
 }
 

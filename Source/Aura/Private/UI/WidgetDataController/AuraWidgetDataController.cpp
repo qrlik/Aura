@@ -24,3 +24,6 @@ void UAuraWidgetDataController::SetWidgetDataControllerParams(const FWidgetDataC
 	AbilitySystemComponent = Params.AbilitySystemComponent;
 	AttributeSet = Params.AttributeSet;
 }
+
+void UAuraWidgetDataController::BroadcastInitialValues() {
+}
