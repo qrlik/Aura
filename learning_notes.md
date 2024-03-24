@@ -225,9 +225,21 @@ Gameplay Effect Spec\
 Magnitude Calculation Type (Scalable Float, Attribute Based, Custom (Modifier Magnitude Calculation MMC), Set by Caller(by Name/Tag))\
 *Execution* -> Gameplay Effect Execution Calculation\
 
-*Duration Policy* - Instant, Has Duration, Infinite
-*Stacking*
-*Add Gameplay Tags*
-*Grant Abilities*
+*Duration Policy* - Instant, Has Duration, Infinite\
+*Stacking*\
+*Add Gameplay Tags*\
+*Grant Abilities*\
 
+## lesson 37. Effect Actor Improved
+UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent\
+UAbilitySystemGlobals::GetAbilitySystemComponentFromActor\
+
+UAbilitySystemComponent::ApplyGameplayEffect[Spec]To[Self/Target]\
+UAbilitySystemComponent::MakeOutgoingSpec\
+
+*FGameplayEffectContext* - stores an instigator and related data, such as positions and targets. Great place to track transient information about an execution\
+
+*FGameplayEffectSpec* (What UGameplayEffect (const data), Level, Context)\
+Any state added to FGameplayEffectSpec must be handled in the move/copy constructor/operator!\
+*FGameplayEffectSpecHandle* - generate a GameplayEffectSpec once and then reference it by handle, to apply it multiple times/multiple targets.\
 
