@@ -207,6 +207,27 @@ UPROPERTY(*BlueprintAssignable*) - multicast Delegates only. Property should be 
 UCLASS(*BlueprintType*) - can be used for variables in blueprints\
 UCLASS(*Blueprintable*) - acceptable for creating blueprints\
 
-## lesson 34. Listining to attributes changes\
+## lesson 34. Listining to attributes changes
 UAbilitySystemComponent::GetGameplayAttributeValueChangeDelegate\
 FOnAttributeChangeData\
+
+<br><br>
+
+# 6. Gameplay Effects
+
+## lesson 36. Gameplay Effects
+Data only\
+Don't subclass UGameplayEffect (use instead Execution or MMC)\
+Gameplay Effect Spec\
+
+*Affect Attributes* through *Modifiers* and *Executions*\
+*Modifiers* -> Modifier Op (Add, Multiply, Divide, Override) + Magnitude\
+Magnitude Calculation Type (Scalable Float, Attribute Based, Custom (Modifier Magnitude Calculation MMC), Set by Caller(by Name/Tag))\
+*Execution* -> Gameplay Effect Execution Calculation\
+
+*Duration Policy* - Instant, Has Duration, Infinite
+*Stacking*
+*Add Gameplay Tags*
+*Grant Abilities*
+
+
