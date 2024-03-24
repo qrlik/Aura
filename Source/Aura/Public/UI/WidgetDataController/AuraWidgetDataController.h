@@ -42,7 +42,6 @@ public:
 protected:
 	template <typename ClassType>
 	void BindAttributeValueChange(FGameplayAttribute Attribute, void (ClassType::*Function)(const FOnAttributeChangeData&) const) {
-		check(AbilitySystemComponent);
 		auto& Delegate = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute);
 		check(!Delegate.IsBoundToObject(this));
 		Delegate.AddUObject(CastChecked<ClassType>(this), Function);

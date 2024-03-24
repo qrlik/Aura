@@ -16,13 +16,14 @@ UOverlayWidgetDataController* AAuraHUD::GetOverlayWidgetDataController(const FWi
 }
 
 void AAuraHUD::UpdateOverlay() {
-	if (OverlayWidget) {
-		const FWidgetDataControllerParams Params{ Cast<AAuraPlayerController>(GetOwningPlayerController()) };
-		auto* WidgetDataController = GetOverlayWidgetDataController(Params);
-
-		OverlayWidget->SetWidgetDataController(WidgetDataController);
-		WidgetDataController->Initialize();
+	if (!OverlayWidget) {
+		return;
 	}
+	const FWidgetDataControllerParams Params{ Cast<AAuraPlayerController>(GetOwningPlayerController()) };
+	auto* WidgetDataController = GetOverlayWidgetDataController(Params);
+
+	OverlayWidget->SetWidgetDataController(WidgetDataController);
+	WidgetDataController->Initialize();
 }
 
 void AAuraHUD::BeginPlay() {

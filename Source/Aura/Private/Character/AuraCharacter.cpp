@@ -20,26 +20,19 @@ AAuraCharacter::AAuraCharacter() {
 
 void AAuraCharacter::OnPlayerStateChanged(APlayerState* NewPlayerState, APlayerState* OldPlayerState) {
 	Super::OnPlayerStateChanged(NewPlayerState, OldPlayerState);
-	if (NewPlayerState == OldPlayerState) {
-		return;
-	}
+
 	UpdateGameplayAbilities();
 	UpdateHUD();
 }
 
 void AAuraCharacter::UpdateGameplayAbilities() {
-	if (AbilitySystemComponent) {
-		AbilitySystemComponent->SetAvatarActor(nullptr);
-	}
+	const auto* State = GetPlayerState<AAuraPlayerState>();
 
-	if (const auto* State = GetPlayerState<AAuraPlayerState>()) {
-		AbilitySystemComponent = State->GetAbilitySystemComponent();
+	AbilitySystemComponent = (State) ? State->GetAbilitySystemComponent() : nullptr;
+	AttributeSet = (State) ? State->GetAttributeSet() : nullptr;
+
+	if (AbilitySystemComponent) {
 		AbilitySystemComponent->SetAvatarActor(this);
-		AttributeSet = State->GetAttributeSet();
-	}
-	else {
-		AbilitySystemComponent = nullptr;
-		AttributeSet = nullptr;
 	}
 }
 
