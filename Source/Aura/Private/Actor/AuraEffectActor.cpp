@@ -33,6 +33,7 @@ void AAuraEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 	// TODO: Change to Gameplay Effect. For learning purpose used const_cast
 	if (const auto* AttributeSet = AbilitySystem->GetAbilitySystemComponent()->GetSet<UAuraAttributeSet>()) {
 		const_cast<UAuraAttributeSet*>(AttributeSet)->SetHealth(AttributeSet->GetHealth() + 25.f);
+		const_cast<UAuraAttributeSet*>(AttributeSet)->SetMana(AttributeSet->GetMana() + 10.f);
 		Destroy();
 	}
 }
