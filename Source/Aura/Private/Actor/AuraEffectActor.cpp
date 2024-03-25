@@ -15,9 +15,21 @@ void AAuraEffectActor::BeginPlay() {
 }
 
 void AAuraEffectActor::OnOverlap(AActor* TargetActor) {
+	if (InstantGameplayEffect.ApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap) {
+		ApplyInstantEffectToTarget(TargetActor);
+	}
+	if (InstantGameplayEffect.ApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap) {
+		ApplyDurationEffectToTarget(TargetActor);
+	}
 }
 
 void AAuraEffectActor::OnEndOverlap(AActor* TargetActor) {
+	if (InstantGameplayEffect.ApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap) {
+		ApplyInstantEffectToTarget(TargetActor);
+	}
+	if (InstantGameplayEffect.ApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap) {
+		ApplyDurationEffectToTarget(TargetActor);
+	}
 }
 
 void AAuraEffectActor::ApplyInstantEffectToTarget(AActor* TargetActor) const {
