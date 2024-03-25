@@ -245,6 +245,13 @@ Any state added to FGameplayEffectSpec must be handled in the move/copy construc
 
 ## lesson 40. Duration Policy
 *EGameplayEffectDurationType*\
-Instant - permanent change to FGameplayAttributeData::BaseValue\
-HasDuration/Infinite - change FGameplayAttributeData::CurrentValue. Undone when effect removed.\
+Instant - permanent change to FGameplayAttributeData::BaseValue (which only includes permanent changes)\
+HasDuration/Infinite - change FGameplayAttributeData::CurrentValue (which includes temporary buffs). Undone when effect removed.\
 Can be periodic. Period tick will be permanent and not be undone at effect removed.\
+
+## lesson 41. Effect Stacking
+Without stacking effect just apply N times.\
+
+*EGameplayEffectStackingType*\
+AggregateBySource - each caster has its own stack\
+AggregateByTarget - each target has its own stack\
