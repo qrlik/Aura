@@ -243,3 +243,8 @@ UAbilitySystemComponent::MakeOutgoingSpec\
 Any state added to FGameplayEffectSpec must be handled in the move/copy constructor/operator!\
 *FGameplayEffectSpecHandle* - generate a GameplayEffectSpec once and then reference it by handle, to apply it multiple times/multiple targets.\
 
+## lesson 40. Duration Policy
+*EGameplayEffectDurationType*\
+Instant - permanent change to FGameplayAttributeData::BaseValue\
+HasDuration/Infinite - change FGameplayAttributeData::CurrentValue. Undone when effect removed.\
+Can be periodic. Period tick will be permanent and not be undone at effect removed.\
