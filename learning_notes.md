@@ -217,7 +217,7 @@ FOnAttributeChangeData\
 
 ## lesson 36. Gameplay Effects
 Data only\
-Don't subclass UGameplayEffect (use instead Execution or MMC)\
+Don't subclass UGameplayEffect, only Blueprints (use instead Execution or MMC)\
 Gameplay Effect Spec\
 
 *Affect Attributes* through *Modifiers* and *Executions*\
