@@ -14,12 +14,22 @@ void AAuraEffectActor::BeginPlay() {
 	Super::BeginPlay();
 }
 
+void AAuraEffectActor::OnOverlap(AActor* TargetActor) {
+}
+
+void AAuraEffectActor::OnEndOverlap(AActor* TargetActor) {
+}
+
 void AAuraEffectActor::ApplyInstantEffectToTarget(AActor* TargetActor) const {
-	ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass);
+	ApplyEffectToTarget(TargetActor, InstantGameplayEffect.GameplayEffectClass);
 }
 
 void AAuraEffectActor::ApplyDurationEffectToTarget(AActor* TargetActor) const {
-	ApplyEffectToTarget(TargetActor, DurationGameplayEffectClass);
+	ApplyEffectToTarget(TargetActor, DurationGameplayEffect.GameplayEffectClass);
+}
+
+void AAuraEffectActor::ApplyInfiniteEffectToTarget(AActor* TargetActor) const {
+	ApplyEffectToTarget(TargetActor, InfiniteGameplayEffect.GameplayEffectClass);
 }
 
 void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> EffectClass) const {
