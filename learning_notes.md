@@ -234,7 +234,7 @@ Magnitude Calculation Type (Scalable Float, Attribute Based, Custom (Modifier Ma
 UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent\
 UAbilitySystemGlobals::GetAbilitySystemComponentFromActor\
 
-UAbilitySystemComponent::ApplyGameplayEffect[Spec]To[Self/Target]\
+UAbilitySystemComponent::ApplyGameplayEffect[Spec]To[Self/Target] - Spec used already created spec, without Spec will create locally inside\
 UAbilitySystemComponent::MakeOutgoingSpec\
 
 *FGameplayEffectContext* - stores an instigator and related data, such as positions and targets. Great place to track transient information about an execution\
