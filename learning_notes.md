@@ -291,4 +291,7 @@ FGameplayTagContainer (GAS use FGameplayTagCountContainer)\
 Gameplay Effects can give tags to ASC on apply and remove tags after (e.g silense tag which block ASC ability use)\
 Also used for identify inputs,abilities, attributes, damage types, debuffs\
 
-
+## lesson 49. Creating Gameplay Tags in the Editor
+Project Settings - Gameplay Tags\
+Config/DefaultGameplayTags.ini\
+Config/Tags/*.ini\
