@@ -273,3 +273,22 @@ FGameplayEffectContextHandle::Get[Original]InstigatorAbilitySystemComponent\
 TEnumAsByte - Template to store enumeration values as bytes in a type-safe way\
 
 ## lesson 47. Curve Tables for Scalable Floats
+
+<br><br>
+
+# 7. Gameplay Tags
+
+## lesson 48. Gameplay Tags
+Gameplay Tag Manager -> Gameplay Tags\
+
+Implement IGameplayTagAssetInterface (like UAbilitySystemComponent)\
+GetOwnedGameplayTags = 0\
+HasMatchingGameplayTag\
+HasAllMatchingGameplayTags\
+HasAnyMatchingGameplayTags\
+FGameplayTagContainer (GAS use FGameplayTagCountContainer)\
+
+Gameplay Effects can give tags to ASC on apply and remove tags after (e.g silense tag which block ASC ability use)\
+Also used for identify inputs,abilities, attributes, damage types, debuffs\
+
+

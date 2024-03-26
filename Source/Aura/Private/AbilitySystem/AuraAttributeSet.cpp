@@ -24,6 +24,7 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) {
 	Super::PreAttributeChange(Attribute, NewValue);
 
+	// TODO fix/understand attributes bug (take a lot of bottles and go in fire). may be fill fix in 63 lesson
 	if (Attribute == GetHealthAttribute()) {
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
 	}
