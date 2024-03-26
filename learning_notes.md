@@ -241,7 +241,7 @@ return FActiveGameplayEffectHandle with int32 index\
 
 *FGameplayEffectContext* - stores an instigator and related data, such as positions and targets. Great place to track transient information about an execution\
 
-*FGameplayEffectSpec* (What UGameplayEffect (const data), Level, Context)\
+*FGameplayEffectSpec* (What UGameplayEffect (const data), Level, *Context*)\
 Any state added to FGameplayEffectSpec must be handled in the move/copy constructor/operator!\
 *FGameplayEffectSpecHandle* - generate a GameplayEffectSpec once and then reference it by handle, to apply it multiple times/multiple targets.\
 
@@ -257,3 +257,17 @@ Without stacking effect just apply N times.\
 *EGameplayEffectStackingType*\
 AggregateBySource - each caster has its own stack (instigator/owner of component)\
 AggregateByTarget - each target has its own stack\
+
+## lesson 45. Attribute Change Clamp
+good for clamps\
+UAttributeSet::PreAttributeBaseChange\
+UAttributeSet::PreAttributeChange\
+
+## lesson 46. 
+UAttributeSet::PostGameplayEffectExecute\
+FGameplayEffectModCallbackData (containt EffectSpec, ModifierEvaluatedData, Target ASC)\
+*FGameplayModifierEvaluatedData* - Data that describes what happened in an attribute modification\
+UAbilitySystemComponent::*AbilityActorInfo* - Cached off data about the owning actor\
+FGameplayEffectContextHandle::Get[Original]InstigatorAbilitySystemComponent\
+
+TEnumAsByte - Template to store enumeration values as bytes in a type-safe way\
