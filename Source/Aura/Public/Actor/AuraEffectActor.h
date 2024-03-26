@@ -11,15 +11,22 @@ class UGameplayEffect;
 
 UENUM(BlueprintType)
 enum class EEffectApplicationPolicy {
+	DoNotApply,
 	ApplyOnOverlap,
-	ApplyOnEndOverlap,
-	DoNotApply
+	ApplyOnEndOverlap
 };
 
 UENUM(BlueprintType)
 enum class EEffectRemovalPolicy {
-	RemoveOnEndOverlap,
-	DoNotRemove
+	DoNotRemove,
+	RemoveOnEndOverlap
+};
+
+UENUM(BlueprintType)
+enum class EEffectActorDestroyPolicy {
+	DoNotDestroy,
+	DestroyOnApply,
+	DestroyOnRemove
 };
 
 USTRUCT(BlueprintType)
@@ -34,6 +41,9 @@ struct FGameplayEffectData {
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	EEffectRemovalPolicy RemovalPolicy = EEffectRemovalPolicy::DoNotRemove;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	EEffectActorDestroyPolicy ActorDestroyPolicy = EEffectActorDestroyPolicy::DoNotDestroy;
 };
 
 UCLASS()
@@ -52,29 +62,17 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnEndOverlap(AActor* TargetActor);
 
-	UFUNCTION(BlueprintCallable)
-	void ApplyInstantEffectToTarget(AActor* TargetActor);
-
-	UFUNCTION(BlueprintCallable)
-	void ApplyDurationEffectToTarget(AActor* TargetActor);
-
-	UFUNCTION(BlueprintCallable)
-	void ApplyInfiniteEffectToTarget(AActor* TargetActor);
-
-	UFUNCTION(BlueprintCallable)
-	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> EffectClass);
-
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
-	FGameplayEffectData InstantGameplayEffect;
+	TArray<FGameplayEffectData> Effects;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
-	FGameplayEffectData DurationGameplayEffect;
+private:
+	void ApplyEffectToTarget(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectData& Effect);
+	void RemoveEffectFromTarget(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectData& Effect);
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
-	FGameplayEffectData InfiniteGameplayEffect;
+	struct FActiveGameplayEffectData {
+		TSubclassOf<UGameplayEffect> GameplayEffectClass;
+		FActiveGameplayEffectHandle Handle;
+	};
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
-	bool DestroyOnEffectRemoval = false;
-
-	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffects;
+	TMap<TWeakObjectPtr<UAbilitySystemComponent>, TArray<FActiveGameplayEffectData>> ActiveEffects;
 };

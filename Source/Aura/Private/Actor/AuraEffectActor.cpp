@@ -15,73 +15,77 @@ void AAuraEffectActor::BeginPlay() {
 }
 
 void AAuraEffectActor::OnOverlap(AActor* TargetActor) {
-	if (InstantGameplayEffect.ApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap) {
-		ApplyInstantEffectToTarget(TargetActor);
-	}
-	if (DurationGameplayEffect.ApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap) {
-		ApplyDurationEffectToTarget(TargetActor);
-	}
-	if (InfiniteGameplayEffect.ApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap) {
-		ApplyInfiniteEffectToTarget(TargetActor);
-	}
-}
-
-void AAuraEffectActor::OnEndOverlap(AActor* TargetActor) {
-	if (InstantGameplayEffect.ApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap) {
-		ApplyInstantEffectToTarget(TargetActor);
-	}
-	if (InstantGameplayEffect.ApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap) {
-		ApplyDurationEffectToTarget(TargetActor);
-	}
-	if (InfiniteGameplayEffect.ApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap) {
-		ApplyInfiniteEffectToTarget(TargetActor);
-	}
-	if (InfiniteGameplayEffect.RemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap) {
-		auto* AbilitySystemComponent = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
-		if (!AbilitySystemComponent) {
-			return;
-		}
-
-		FActiveGameplayEffectHandle EffectForRemove;
-		for (const auto& [ActiveEffect, Component] : ActiveEffects) {
-			if (AbilitySystemComponent == Component) {
-				AbilitySystemComponent->RemoveActiveGameplayEffect(ActiveEffect, 1);
-				EffectForRemove = ActiveEffect;
-				break;
-			}
-		}
-		ActiveEffects.FindAndRemoveChecked(EffectForRemove);
-	}
-}
-
-void AAuraEffectActor::ApplyInstantEffectToTarget(AActor* TargetActor) {
-	ApplyEffectToTarget(TargetActor, InstantGameplayEffect.GameplayEffectClass);
-}
-
-void AAuraEffectActor::ApplyDurationEffectToTarget(AActor* TargetActor) {
-	ApplyEffectToTarget(TargetActor, DurationGameplayEffect.GameplayEffectClass);
-}
-
-void AAuraEffectActor::ApplyInfiniteEffectToTarget(AActor* TargetActor) {
-	ApplyEffectToTarget(TargetActor, InfiniteGameplayEffect.GameplayEffectClass);
-}
-
-void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> EffectClass) {
 	auto* AbilitySystemComponent = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
 	if (!AbilitySystemComponent) {
 		return;
 	}
-	check(EffectClass);
+
+	for (const auto& EffectData : Effects) {
+		if (EffectData.ApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap) {
+			ApplyEffectToTarget(AbilitySystemComponent, EffectData);
+		}
+	}
+}
+
+void AAuraEffectActor::OnEndOverlap(AActor* TargetActor) {
+	auto* AbilitySystemComponent = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
+	if (!AbilitySystemComponent) {
+		return;
+	}
+
+	for (const auto& EffectData : Effects) {
+		if (EffectData.ApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap) {
+			ApplyEffectToTarget(AbilitySystemComponent, EffectData);
+		}
+		if (EffectData.RemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap) {
+			RemoveEffectFromTarget(AbilitySystemComponent, EffectData);
+		}
+	}
+}
+
+void AAuraEffectActor::ApplyEffectToTarget(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectData& Effect) {
+	if (!AbilitySystemComponent) {
+		return;
+	}
+	check(Effect.GameplayEffectClass);
 
 	auto EffectContext = AbilitySystemComponent->MakeEffectContext();
 	EffectContext.AddSourceObject(this);
 
-	const auto EffectSpec = AbilitySystemComponent->MakeOutgoingSpec(EffectClass, 1.f, EffectContext);
+	const auto EffectSpec = AbilitySystemComponent->MakeOutgoingSpec(Effect.GameplayEffectClass, 1.f, EffectContext);
 	const auto ActiveEffect = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*EffectSpec.Data.Get());
 
-	if (EffectClass->GetDefaultObject<UGameplayEffect>()->DurationPolicy == EGameplayEffectDurationType::Infinite
-		&& InfiniteGameplayEffect.RemovalPolicy != EEffectRemovalPolicy::DoNotRemove) {
-		ActiveEffects.Add(ActiveEffect, AbilitySystemComponent); // to do refactor this shared ptrs
+	if (ActiveEffect.WasSuccessfullyApplied() && Effect.ActorDestroyPolicy == EEffectActorDestroyPolicy::DestroyOnApply) {
+		Destroy();
+	}
+	else if (ActiveEffect.IsValid() && Effect.RemovalPolicy != EEffectRemovalPolicy::DoNotRemove) {
+		auto& ComponentEffects = ActiveEffects.FindOrAdd(AbilitySystemComponent, {});
+		ComponentEffects.Emplace(Effect.GameplayEffectClass, ActiveEffect);
+	}
+}
+
+void AAuraEffectActor::RemoveEffectFromTarget(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectData& Effect) {
+	if (!AbilitySystemComponent) {
+		return;
+	}
+	auto* ComponentEffects = ActiveEffects.Find(AbilitySystemComponent);
+	if (!ComponentEffects) {
+		return;
 	}
 
+	const auto WasRemoved = ComponentEffects->RemoveAllSwap([AbilitySystemComponent, EffectClass = Effect.GameplayEffectClass](const auto& ActiveEffectData) {
+		if (EffectClass != ActiveEffectData.GameplayEffectClass) {
+			return false;
+		}
+		AbilitySystemComponent->RemoveActiveGameplayEffect(ActiveEffectData.Handle, 1);
+		return true;
+	});
+	check(ComponentEffects->IsEmpty()); // while EEffectRemovalPolicy has only RemoveOnEndOverlap
+
+	if (WasRemoved && Effect.ActorDestroyPolicy == EEffectActorDestroyPolicy::DestroyOnRemove) {
+		Destroy();
+	}
+	else if (ComponentEffects->IsEmpty()) {
+		ActiveEffects.Remove(AbilitySystemComponent);
+	}
 }

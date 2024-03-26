@@ -234,8 +234,10 @@ Magnitude Calculation Type (Scalable Float, Attribute Based, Custom (Modifier Ma
 UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent\
 UAbilitySystemGlobals::GetAbilitySystemComponentFromActor\
 
+UAbilitySystemComponent::MakeEffectContext -> handle with TSharedPtr\
+UAbilitySystemComponent::MakeOutgoingSpec -> handle with TSharedPtr\
 UAbilitySystemComponent::ApplyGameplayEffect[Spec]To[Self/Target] - Spec used already created spec, without Spec will create locally inside\
-UAbilitySystemComponent::MakeOutgoingSpec\
+return FActiveGameplayEffectHandle with int32 index\
 
 *FGameplayEffectContext* - stores an instigator and related data, such as positions and targets. Great place to track transient information about an execution\
 
@@ -253,5 +255,5 @@ Can be periodic. Period tick will be permanent and not be undone at effect remov
 Without stacking effect just apply N times.\
 
 *EGameplayEffectStackingType*\
-AggregateBySource - each caster has its own stack\
+AggregateBySource - each caster has its own stack (instigator/owner of component)\
 AggregateByTarget - each target has its own stack\
