@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActiveGameplayEffectHandle.h"
 #include "GameFramework/Actor.h"
 #include "AuraEffectActor.generated.h"
 
@@ -52,16 +53,16 @@ protected:
 	void OnEndOverlap(AActor* TargetActor);
 
 	UFUNCTION(BlueprintCallable)
-	void ApplyInstantEffectToTarget(AActor* TargetActor) const;
+	void ApplyInstantEffectToTarget(AActor* TargetActor);
 
 	UFUNCTION(BlueprintCallable)
-	void ApplyDurationEffectToTarget(AActor* TargetActor) const;
+	void ApplyDurationEffectToTarget(AActor* TargetActor);
 
 	UFUNCTION(BlueprintCallable)
-	void ApplyInfiniteEffectToTarget(AActor* TargetActor) const;
+	void ApplyInfiniteEffectToTarget(AActor* TargetActor);
 
 	UFUNCTION(BlueprintCallable)
-	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> EffectClass) const;
+	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> EffectClass);
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
 	FGameplayEffectData InstantGameplayEffect;
@@ -74,4 +75,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Applied Effects")
 	bool DestroyOnEffectRemoval = false;
+
+	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffects;
 };
