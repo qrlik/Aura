@@ -263,7 +263,7 @@ good for clamps\
 UAttributeSet::PreAttributeBaseChange\
 UAttributeSet::PreAttributeChange\
 
-## lesson 46. 
+## lesson 46.
 UAttributeSet::PostGameplayEffectExecute\
 FGameplayEffectModCallbackData (containt EffectSpec, ModifierEvaluatedData, Target ASC)\
 *FGameplayModifierEvaluatedData* - Data that describes what happened in an attribute modification\
@@ -271,3 +271,5 @@ UAbilitySystemComponent::*AbilityActorInfo* - Cached off data about the owning a
 FGameplayEffectContextHandle::Get[Original]InstigatorAbilitySystemComponent\
 
 TEnumAsByte - Template to store enumeration values as bytes in a type-safe way\
+
+## lesson 47. Curve Tables for Scalable Floats

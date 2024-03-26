@@ -54,7 +54,7 @@ void AAuraEffectActor::ApplyEffectToTarget(UAbilitySystemComponent* AbilitySyste
 	auto EffectContext = AbilitySystemComponent->MakeEffectContext();
 	EffectContext.AddSourceObject(this);
 
-	const auto EffectSpec = AbilitySystemComponent->MakeOutgoingSpec(Effect.GameplayEffectClass, 1.f, EffectContext);
+	const auto EffectSpec = AbilitySystemComponent->MakeOutgoingSpec(Effect.GameplayEffectClass, Effect.EffectLevel, EffectContext);
 	const auto ActiveEffect = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*EffectSpec.Data.Get());
 
 	if (ActiveEffect.WasSuccessfullyApplied() && Effect.ActorDestroyPolicy == EEffectActorDestroyPolicy::DestroyOnApply) {

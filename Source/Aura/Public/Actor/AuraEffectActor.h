@@ -44,6 +44,9 @@ struct FGameplayEffectData {
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	EEffectActorDestroyPolicy ActorDestroyPolicy = EEffectActorDestroyPolicy::DoNotDestroy;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	float EffectLevel = 1.f;
 };
 
 UCLASS()
