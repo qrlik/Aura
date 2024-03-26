@@ -37,9 +37,11 @@ void AAuraEffectActor::OnEndOverlap(AActor* TargetActor) {
 		if (EffectData.ApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap) {
 			ApplyEffectToTarget(AbilitySystemComponent, EffectData);
 		}
+
 		if (EffectData.RemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap) {
 			RemoveEffectFromTarget(AbilitySystemComponent, EffectData);
 		}
+		check(ActiveEffects.Find(AbilitySystemComponent) == nullptr); // empty after all EEffectRemovalPolicy
 	}
 }
 
@@ -68,24 +70,23 @@ void AAuraEffectActor::RemoveEffectFromTarget(UAbilitySystemComponent* AbilitySy
 	if (!AbilitySystemComponent) {
 		return;
 	}
-	auto* ComponentEffects = ActiveEffects.Find(AbilitySystemComponent);
-	if (!ComponentEffects) {
+	auto* EffectsByComponent = ActiveEffects.Find(AbilitySystemComponent);
+	if (!EffectsByComponent) {
 		return;
 	}
 
-	const auto WasRemoved = ComponentEffects->RemoveAllSwap([AbilitySystemComponent, EffectClass = Effect.GameplayEffectClass](const auto& ActiveEffectData) {
+	EffectsByComponent->RemoveAllSwap([AbilitySystemComponent, EffectClass = Effect.GameplayEffectClass](const auto& ActiveEffectData) {
 		if (EffectClass != ActiveEffectData.GameplayEffectClass) {
 			return false;
 		}
 		AbilitySystemComponent->RemoveActiveGameplayEffect(ActiveEffectData.Handle, 1);
 		return true;
 	});
-	check(ComponentEffects->IsEmpty()); // while EEffectRemovalPolicy has only RemoveOnEndOverlap
 
-	if (WasRemoved && Effect.ActorDestroyPolicy == EEffectActorDestroyPolicy::DestroyOnRemove) {
+	if (Effect.ActorDestroyPolicy == EEffectActorDestroyPolicy::DestroyOnRemove) {
 		Destroy();
 	}
-	else if (ComponentEffects->IsEmpty()) {
+	if (EffectsByComponent->IsEmpty()) {
 		ActiveEffects.Remove(AbilitySystemComponent);
 	}
 }
