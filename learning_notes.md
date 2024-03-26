@@ -295,3 +295,7 @@ Also used for identify inputs,abilities, attributes, damage types, debuffs\
 Project Settings - Gameplay Tags\
 Config/DefaultGameplayTags.ini\
 Config/Tags/*.ini\
+
+## lesson 50. Creating Gameplay Tags from Data Tables
+Miscellaneous - Data Table - GameplayTagTableRow\
+Project Settings - Gameplay Tags - Gameplay Tag Table List\
