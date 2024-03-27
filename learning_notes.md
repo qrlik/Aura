@@ -286,7 +286,7 @@ GetOwnedGameplayTags = 0\
 HasMatchingGameplayTag\
 HasAllMatchingGameplayTags\
 HasAnyMatchingGameplayTags\
-FGameplayTagContainer (GAS use FGameplayTagCountContainer)\
+FGameplayTagContainer -> FGameplayTag (GAS use FGameplayTagCountContainer)\
 
 Gameplay Effects can give tags to ASC on apply and remove tags after (e.g silense tag which block ASC ability use)\
 Also used for identify inputs,abilities, attributes, damage types, debuffs\
@@ -305,7 +305,11 @@ Tags can stack, but count only effect application (not effect stacking if enable
 
 Combined = (Inherited + Added) - Removed (if parent has)\
 Asset Tags - current asset tags\
-Target Tags - applied to target actor\
+Target/Granted Tags - applied to target actor (*instant effect dont grant tags*) \
 
 ## lesson 53. Gameplay Effect Delegates
 FOnGameplayEffectAppliedDelegate
+
+## lesson 54. Get Effect Tags
+FGameplayEffectSpec::GetAllAssetTags
+FGameplayEffectSpec::GetAllGrantedTags
