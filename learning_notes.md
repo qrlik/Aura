@@ -308,8 +308,12 @@ Asset Tags - current asset tags\
 Target/Granted Tags - applied to target actor (*instant effect dont grant tags*) \
 
 ## lesson 53. Gameplay Effect Delegates
-FOnGameplayEffectAppliedDelegate
+FOnGameplayEffectAppliedDelegate\
 
 ## lesson 54. Get Effect Tags
-FGameplayEffectSpec::GetAllAssetTags
-FGameplayEffectSpec::GetAllGrantedTags
+FGameplayEffectSpec::GetAllAssetTags\
+FGameplayEffectSpec::GetAllGrantedTags\
+
+## lesson 56. UI Widget Data Table
+FTableRowBase\
+UDataTable\

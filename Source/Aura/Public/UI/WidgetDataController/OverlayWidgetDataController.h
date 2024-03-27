@@ -6,9 +6,27 @@
 #include "UI/WidgetDataController/AuraWidgetDataController.h"
 #include "OverlayWidgetDataController.generated.h"
 
+struct FOnAttributeChangeData;
+class UAuraUserWidget;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
 
-struct FOnAttributeChangeData;
+USTRUCT(BlueprintType)
+struct FMessageWidgetByTagRow : public FTableRowBase {
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	FGameplayTag Tag;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	FText Text;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	TSubclassOf<UAuraUserWidget> Widget;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	TObjectPtr<UTexture2D> Image;
+};
 
 UCLASS(BlueprintType, Blueprintable)
 class AURA_API UOverlayWidgetDataController : public UAuraWidgetDataController {
@@ -32,4 +50,7 @@ protected:
 	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
 	void ManaChanged(const FOnAttributeChangeData& Data) const;
 	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
+
+	UPROPERTY(EditDefaultsOnly, Category = "WidgetData")
+	TObjectPtr<UDataTable> MessageWidgetByTag;
 };

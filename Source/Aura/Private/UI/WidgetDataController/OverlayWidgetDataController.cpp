@@ -2,7 +2,6 @@
 
 #include "UI/WidgetDataController/OverlayWidgetDataController.h"
 
-#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 
 void UOverlayWidgetDataController::BroadcastInitialValues() {
