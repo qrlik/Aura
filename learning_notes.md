@@ -299,3 +299,12 @@ Config/Tags/*.ini\
 ## lesson 50. Creating Gameplay Tags from Data Tables
 Miscellaneous - Data Table - GameplayTagTableRow\
 Project Settings - Gameplay Tags - Gameplay Tag Table List\
+
+## lesson 52. Apply Gameplay Tags with Effects
+Tags can stack, but count only effect application (not effect stacking if enabled)\
+
+Combined = (Inherited + Added) - Removed (if parent has)\
+Asset Tags - current asset tags\
+Target Tags - applied to target actor\
+
+## lesson 53. Gameplay Effect Delegates
