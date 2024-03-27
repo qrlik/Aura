@@ -16,6 +16,6 @@ public:
 	virtual void OnPlayerStateChanged(APlayerState* NewPlayerState, APlayerState* OldPlayerState) override;
 
 private:
-	void UpdateGameplayAbilities();
+	void UpdateAbilitySystemComponent();
 	void UpdateHUD() const;
 };

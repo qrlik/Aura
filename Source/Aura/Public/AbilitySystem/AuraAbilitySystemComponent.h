@@ -9,4 +9,14 @@
 UCLASS()
 class AURA_API UAuraAbilitySystemComponent : public UAbilitySystemComponent {
 	GENERATED_BODY()
+
+public:
+	virtual void InitializeComponent() override;
+
+protected:
+	void OnEffectAppliedToSelf(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
+	                           FActiveGameplayEffectHandle ActiveEffect) const;
+
+private:
+	void BindDelegates();
 };

@@ -308,3 +308,4 @@ Asset Tags - current asset tags\
 Target Tags - applied to target actor\
 
 ## lesson 53. Gameplay Effect Delegates
+FOnGameplayEffectAppliedDelegate

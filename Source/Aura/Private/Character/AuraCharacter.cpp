@@ -21,11 +21,11 @@ AAuraCharacter::AAuraCharacter() {
 void AAuraCharacter::OnPlayerStateChanged(APlayerState* NewPlayerState, APlayerState* OldPlayerState) {
 	Super::OnPlayerStateChanged(NewPlayerState, OldPlayerState);
 
-	UpdateGameplayAbilities();
+	UpdateAbilitySystemComponent();
 	UpdateHUD();
 }
 
-void AAuraCharacter::UpdateGameplayAbilities() {
+void AAuraCharacter::UpdateAbilitySystemComponent() {
 	const auto* State = GetPlayerState<AAuraPlayerState>();
 
 	AbilitySystemComponent = (State) ? State->GetAbilitySystemComponent() : nullptr;
