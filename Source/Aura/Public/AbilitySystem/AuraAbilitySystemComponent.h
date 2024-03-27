@@ -6,12 +6,16 @@
 #include "AbilitySystemComponent.h"
 #include "AuraAbilitySystemComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTagsSignature, const FGameplayTagContainer&);
+
 UCLASS()
 class AURA_API UAuraAbilitySystemComponent : public UAbilitySystemComponent {
 	GENERATED_BODY()
 
 public:
 	virtual void InitializeComponent() override;
+
+	FEffectAssetTagsSignature OnAppliedEffect;
 
 protected:
 	void OnEffectAppliedToSelf(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,

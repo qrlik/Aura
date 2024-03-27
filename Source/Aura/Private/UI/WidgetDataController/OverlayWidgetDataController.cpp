@@ -17,6 +17,7 @@ void UOverlayWidgetDataController::BindCallbacksToDependencies() {
 	BindAttributeValueChange(AttributeSet->GetMaxHealthAttribute(), &UOverlayWidgetDataController::MaxHealthChanged);
 	BindAttributeValueChange(AttributeSet->GetManaAttribute(), &UOverlayWidgetDataController::ManaChanged);
 	BindAttributeValueChange(AttributeSet->GetMaxManaAttribute(), &UOverlayWidgetDataController::MaxManaChanged);
+	//AbilitySystemComponent->OnAppliedEffect.AddUObject()
 }
 
 void UOverlayWidgetDataController::HealthChanged(const FOnAttributeChangeData& Data) const {

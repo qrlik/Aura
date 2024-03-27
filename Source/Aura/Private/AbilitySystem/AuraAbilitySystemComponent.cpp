@@ -12,11 +12,7 @@ void UAuraAbilitySystemComponent::OnEffectAppliedToSelf(UAbilitySystemComponent*
                                                         FActiveGameplayEffectHandle ActiveEffect) const {
 	FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);
-	for (const auto& Tag : TagContainer) {
-		// TODO Broadcast to Widget Data Controller
-		FString Msg = FString::Printf(TEXT("GE Tag: %s"), *Tag.ToString());
-		GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Blue, Msg);
-	}
+	OnAppliedEffect.Broadcast(TagContainer);
 }
 
 void UAuraAbilitySystemComponent::BindDelegates() {
