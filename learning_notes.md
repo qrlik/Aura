@@ -319,4 +319,9 @@ FTableRowBase\
 UDataTable\
 
 ## lesson 57. Retrieving Rows from Data Tables
-UDataTable::FindRow<T>
+UDataTable::FindRow<T>\
+
+## lesson 58. Broadcasting Data Table Rows
+FGameplayTag::RequestGameplayTag\
+FGameplayTag::MatchesTag\
+Event Graph - Break (break structure to fields)\

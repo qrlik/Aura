@@ -42,6 +42,20 @@ void UOverlayWidgetDataController::MaxManaChanged(const FOnAttributeChangeData& 
 
 void UOverlayWidgetDataController::EffectAppliedToSelf(const FGameplayTagContainer& EffectTags) const {
 	for (const auto& EffectTag : EffectTags) {
-		auto* Row = MessageWidgetByTag->FindRow<FMessageWidgetByTagRow>(EffectTag.GetTagName(), TEXT(""), false);
+		if (CheckMessageTag(EffectTag)) {
+			continue;
+		}
 	}
+}
+
+bool UOverlayWidgetDataController::CheckMessageTag(const FGameplayTag& Tag) const {
+	const auto MessageTag = FGameplayTag::RequestGameplayTag(FName{ "Message" });
+	if (!Tag.MatchesTag(MessageTag)) {
+		return false;
+	}
+
+	if (const auto* Row = MessageWidgetByTag->FindRow<FMessageWidgetByTagRow>(Tag.GetTagName(), TEXT(""))) {
+		OnEffectMessageTagAppliedToSelf.Broadcast(*Row);
+	}
+	return true;
 }

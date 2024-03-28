@@ -9,8 +9,10 @@
 struct FOnAttributeChangeData;
 class UAuraUserWidget;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
-
+/* Struct for learn data table purpose.
+ * Better struct is UUserWidget (UEffectMessageWidget) on Overlay.
+ * It listens applied tags from data controller and create what it needs.
+ * Right now WidgetDataController have UserWidget data that is incorrect by this data model*/
 USTRUCT(BlueprintType)
 struct FMessageWidgetByTagRow : public FTableRowBase {
 	GENERATED_BODY()
@@ -28,6 +30,10 @@ struct FMessageWidgetByTagRow : public FTableRowBase {
 	TObjectPtr<UTexture2D> Image;
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEffectTagAppliedToSelfSignature, const FMessageWidgetByTagRow&, Row);
+
 UCLASS(BlueprintType, Blueprintable)
 class AURA_API UOverlayWidgetDataController : public UAuraWidgetDataController {
 	GENERATED_BODY()
@@ -41,10 +47,13 @@ public:
 	FOnAttributeChangedSignature OnManaChanged;
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnAttributeChangedSignature OnMaxManaChanged;
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Tags")
+	FOnEffectTagAppliedToSelfSignature OnEffectMessageTagAppliedToSelf;
 
 protected:
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
+	virtual void InitializeImpl() override;
 
 	void HealthChanged(const FOnAttributeChangeData& Data) const;
 	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
@@ -55,4 +64,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "WidgetData")
 	TObjectPtr<UDataTable> MessageWidgetByTag;
+
+private:
+	bool CheckMessageTag(const FGameplayTag& Tag) const;
 };
