@@ -325,3 +325,8 @@ UDataTable::FindRow<T>\
 FGameplayTag::RequestGameplayTag\
 FGameplayTag::MatchesTag\
 Event Graph - Break (break structure to fields)\
+
+## lesson 60. Animating the Message Widget
+Widget Animation - Show the animation keys in curve editor - Add key\
+Event Graph - Add Custom Event \ Delay [Next Tick]\
+
