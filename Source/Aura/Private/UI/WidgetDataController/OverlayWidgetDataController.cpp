@@ -16,7 +16,12 @@ void UOverlayWidgetDataController::BindCallbacksToDependencies() {
 	BindAttributeValueChange(AttributeSet->GetMaxHealthAttribute(), &UOverlayWidgetDataController::MaxHealthChanged);
 	BindAttributeValueChange(AttributeSet->GetManaAttribute(), &UOverlayWidgetDataController::ManaChanged);
 	BindAttributeValueChange(AttributeSet->GetMaxManaAttribute(), &UOverlayWidgetDataController::MaxManaChanged);
-	//AbilitySystemComponent->OnAppliedEffect.AddUObject()
+
+	AbilitySystemComponent->OnEffectAppliedToSelf.AddUObject(this, &UOverlayWidgetDataController::EffectAppliedToSelf);
+}
+
+void UOverlayWidgetDataController::InitializeImpl() {
+	check(MessageWidgetByTag);
 }
 
 void UOverlayWidgetDataController::HealthChanged(const FOnAttributeChangeData& Data) const {
@@ -33,4 +38,10 @@ void UOverlayWidgetDataController::ManaChanged(const FOnAttributeChangeData& Dat
 
 void UOverlayWidgetDataController::MaxManaChanged(const FOnAttributeChangeData& Data) const {
 	OnMaxManaChanged.Broadcast(Data.NewValue);
+}
+
+void UOverlayWidgetDataController::EffectAppliedToSelf(const FGameplayTagContainer& EffectTags) const {
+	for (const auto& EffectTag : EffectTags) {
+		auto* Row = MessageWidgetByTag->FindRow<FMessageWidgetByTagRow>(EffectTag.GetTagName(), TEXT(""), false);
+	}
 }

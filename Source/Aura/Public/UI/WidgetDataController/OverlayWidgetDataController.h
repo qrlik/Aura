@@ -51,6 +51,8 @@ protected:
 	void ManaChanged(const FOnAttributeChangeData& Data) const;
 	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
 
+	void EffectAppliedToSelf(const FGameplayTagContainer& EffectTags) const;
+
 	UPROPERTY(EditDefaultsOnly, Category = "WidgetData")
 	TObjectPtr<UDataTable> MessageWidgetByTag;
 };

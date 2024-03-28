@@ -8,13 +8,13 @@ void UAuraAbilitySystemComponent::InitializeComponent() {
 	BindDelegates();
 }
 
-void UAuraAbilitySystemComponent::OnEffectAppliedToSelf(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
-                                                        FActiveGameplayEffectHandle ActiveEffect) const {
+void UAuraAbilitySystemComponent::EffectAppliedToSelf(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
+                                                      FActiveGameplayEffectHandle ActiveEffect) const {
 	FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);
-	OnAppliedEffect.Broadcast(TagContainer);
+	OnEffectAppliedToSelf.Broadcast(TagContainer);
 }
 
 void UAuraAbilitySystemComponent::BindDelegates() {
-	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::OnEffectAppliedToSelf);
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::EffectAppliedToSelf);
 }

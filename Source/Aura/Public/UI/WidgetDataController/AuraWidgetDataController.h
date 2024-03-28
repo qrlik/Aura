@@ -41,14 +41,11 @@ public:
 
 protected:
 	template <typename ClassType>
-	void BindAttributeValueChange(FGameplayAttribute Attribute, void (ClassType::*Function)(const FOnAttributeChangeData&) const) {
-		auto& Delegate = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute);
-		check(!Delegate.IsBoundToObject(this));
-		Delegate.AddUObject(CastChecked<ClassType>(this), Function);
-	}
+	void BindAttributeValueChange(FGameplayAttribute Attribute, void (ClassType::*Function)(const FOnAttributeChangeData&) const);
 
 	virtual void BroadcastInitialValues();
 	virtual void BindCallbacksToDependencies();
+	virtual void InitializeImpl();
 
 	UPROPERTY()
 	TObjectPtr<AAuraPlayerController> PlayerController;
@@ -59,3 +56,10 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAuraAttributeSet> AttributeSet;
 };
+
+template <typename ClassType>
+void UAuraWidgetDataController::BindAttributeValueChange(FGameplayAttribute Attribute, void (ClassType::*Function)(const FOnAttributeChangeData&) const) {
+	auto& Delegate = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute);
+	check(!Delegate.IsBoundToObject(this));
+	Delegate.AddUObject(CastChecked<ClassType>(this), Function);
+}

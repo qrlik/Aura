@@ -317,3 +317,6 @@ FGameplayEffectSpec::GetAllGrantedTags\
 ## lesson 56. UI Widget Data Table
 FTableRowBase\
 UDataTable\
+
+## lesson 57. Retrieving Rows from Data Tables
+UDataTable::FindRow<T>

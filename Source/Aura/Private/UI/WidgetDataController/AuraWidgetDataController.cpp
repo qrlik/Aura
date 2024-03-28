@@ -30,10 +30,14 @@ void UAuraWidgetDataController::Initialize() {
 		BindCallbacksToDependencies();
 		BroadcastInitialValues();
 	}
+	InitializeImpl();
 }
 
 void UAuraWidgetDataController::BroadcastInitialValues() {
 }
 
 void UAuraWidgetDataController::BindCallbacksToDependencies() {
+}
+
+void UAuraWidgetDataController::InitializeImpl() {
 }

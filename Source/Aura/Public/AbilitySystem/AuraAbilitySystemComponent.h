@@ -15,11 +15,11 @@ class AURA_API UAuraAbilitySystemComponent : public UAbilitySystemComponent {
 public:
 	virtual void InitializeComponent() override;
 
-	FEffectAssetTagsSignature OnAppliedEffect;
+	FEffectAssetTagsSignature OnEffectAppliedToSelf;
 
 protected:
-	void OnEffectAppliedToSelf(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
-	                           FActiveGameplayEffectHandle ActiveEffect) const;
+	void EffectAppliedToSelf(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
+	                         FActiveGameplayEffectHandle ActiveEffect) const;
 
 private:
 	void BindDelegates();
