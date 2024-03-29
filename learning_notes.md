@@ -337,3 +337,11 @@ UKismetMathLibrary::FInterpTo\
 ## lesson 63. Properly Clamping Attributes
 UAttributeSet::PreAttributeBaseChange - NewValue affects **only** BaseValue and call only for instanse and periodic cases\
 UAttributeSet::PreAttributeChange - New Value affects **only** CurrentValue and call in all cases\
+
+<br><br>
+
+# 8. RPG Attributes
+
+## lesson 64. Initialize Attributes from a Data Table
+ASC property window - Default Starting Data\
+Data Table - Attribute Meta Data (FAttributeMetaData) -> RowName [AttributeSetClassName].[AttributeName]\
