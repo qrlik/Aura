@@ -261,7 +261,7 @@ AggregateByTarget - each target has its own stack\
 ## lesson 45. Attribute Change Clamp
 good for clamps\
 UAttributeSet::PreAttributeBaseChange\
-UAttributeSet::PreAttributeChange\
+UAttributeSet::PreAttributeChange (more info in 63 lesson)\ 
 
 ## lesson 46.
 UAttributeSet::PostGameplayEffectExecute\
@@ -333,3 +333,7 @@ Event Graph - Add Custom Event \ Delay [Next Tick]\
 ## lesson 62. Ghost Globe
 UKismetMathLibrary::FInterpTo\
 *Note*: if child bp created with disabled tick event in parent, then you enable it in parent, need to recreate this node at child\
+
+## lesson 63. Properly Clamping Attributes
+UAttributeSet::PreAttributeBaseChange - NewValue affects **only** BaseValue and call only for instanse and periodic cases\
+UAttributeSet::PreAttributeChange - New Value affects **only** CurrentValue and call in all cases\

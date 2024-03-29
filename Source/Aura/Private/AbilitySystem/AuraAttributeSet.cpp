@@ -21,20 +21,15 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 }
 
-void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) {
-	Super::PreAttributeChange(Attribute, NewValue);
+void UAuraAttributeSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const {
+	Super::PreAttributeBaseChange(Attribute, NewValue);
 
-	// TODO fix/understand attributes bug (take a lot of bottles and go in fire). may be fill fix in 63 lesson
 	if (Attribute == GetHealthAttribute()) {
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
 	}
 	else if (Attribute == GetManaAttribute()) {
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxMana());
 	}
-}
-
-void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) {
-	Super::PostGameplayEffectExecute(Data);
 }
 
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const {
