@@ -330,3 +330,6 @@ Event Graph - Break (break structure to fields)\
 Widget Animation - Show the animation keys in curve editor - Add key\
 Event Graph - Add Custom Event \ Delay [Next Tick]\
 
+## lesson 62. Ghost Globe
+UKismetMathLibrary::FInterpTo\
+*Note*: if child bp created with disabled tick event in parent, then you enable it in parent, need to recreate this node at child\
