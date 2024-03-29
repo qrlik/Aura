@@ -18,8 +18,17 @@ AAuraCharacter::AAuraCharacter() {
 	bUseControllerRotationRoll = false;
 }
 
-void AAuraCharacter::OnPlayerStateChanged(APlayerState* NewPlayerState, APlayerState* OldPlayerState) {
-	Super::OnPlayerStateChanged(NewPlayerState, OldPlayerState);
+void AAuraCharacter::PossessedBy(AController* NewController) {
+	Super::PossessedBy(NewController);
+
+	UpdateAbilitySystemComponent();
+	InitializePrimaryAttributes();
+
+	UpdateHUD();
+}
+
+void AAuraCharacter::OnRep_PlayerState() {
+	Super::OnRep_PlayerState();
 
 	UpdateAbilitySystemComponent();
 	UpdateHUD();
