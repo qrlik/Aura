@@ -221,8 +221,8 @@ Don't subclass UGameplayEffect, only Blueprints (use instead Execution or MMC)\
 Gameplay Effect Spec\
 
 *Affect Attributes* through *Modifiers* and *Executions*\
-*Modifiers* -> Modifier Op (Add, Multiply, Divide, Override) + Magnitude\
-Magnitude Calculation Type (Scalable Float, Attribute Based, Custom (Modifier Magnitude Calculation MMC), Set by Caller(by Name/Tag))\
+*Modifiers* -> Modifier Op (Add, Multiply, Divide, Override) + Magnitude + Tags\
+Magnitude Calculation Type (Scalable Float, Attribute Based (lesson.66), Custom (Modifier Magnitude Calculation MMC), Set by Caller(by Name/Tag))\
 *Execution* -> Gameplay Effect Execution Calculation\
 
 *Duration Policy* - Instant, Has Duration, Infinite\
@@ -345,3 +345,5 @@ UAttributeSet::PreAttributeChange - New Value affects **only** CurrentValue and 
 ## lesson 64. Initialize Attributes from a Data Table
 ASC property window - Default Starting Data\
 Data Table - Attribute Meta Data (FAttributeMetaData) -> RowName [AttributeSetClassName].[AttributeName]\
+
+## lesson 66. Attribute Based Modifiers
