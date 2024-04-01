@@ -347,3 +347,8 @@ ASC property window - Default Starting Data\
 Data Table - Attribute Meta Data (FAttributeMetaData) -> RowName [AttributeSetClassName].[AttributeName]\
 
 ## lesson 66. Attribute Based Modifiers
+## lesson 67. Modifier Order of Operations
+Clamping in PreAttribute[Base]Change called after **every** modifier applied\
+
+## lesson 68. Attribute Based Modifier Coefficients
+(Value + Pre Multiply Additive Value) * Coefficient + Post Multiply Additive Value
