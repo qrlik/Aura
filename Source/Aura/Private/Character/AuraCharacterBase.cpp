@@ -15,11 +15,15 @@ void AAuraCharacterBase::BeginPlay() {
 	Super::BeginPlay();
 }
 
-void AAuraCharacterBase::InitializePrimaryAttributes() const {
+void AAuraCharacterBase::InitializeDefaultAttributes() const {
+	InitializeAttributesEffect(DefaultPrimaryAttributes);
+	InitializeAttributesEffect(DefaultSecondaryAttributes);
+}
+
+void AAuraCharacterBase::InitializeAttributesEffect(TSubclassOf<UGameplayEffect> Effect) const {
 	check(AbilitySystemComponent);
-	check(DefaultPrimaryAttributes);
-	AbilitySystemComponent->ApplyGameplayEffectToSelf(DefaultPrimaryAttributes.GetDefaultObject(), 1.f,
-	                                                  AbilitySystemComponent->MakeEffectContext());
+	check(Effect);
+	AbilitySystemComponent->ApplyGameplayEffectToSelf(Effect.GetDefaultObject(), 1.f, AbilitySystemComponent->MakeEffectContext());
 }
 
 UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const {
