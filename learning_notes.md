@@ -351,4 +351,14 @@ Data Table - Attribute Meta Data (FAttributeMetaData) -> RowName [AttributeSetCl
 Clamping in PreAttribute[Base]Change called after **every** modifier applied\
 
 ## lesson 68. Attribute Based Modifier Coefficients
-(Value + Pre Multiply Additive Value) * Coefficient + Post Multiply Additive Value
+(Value + Pre Multiply Additive Value) * Coefficient + Post Multiply Additive Value\
+
+## lesson 73. Modifier Magnitude Calculations
+UGameplayModMagnitudeCalculation::CalculateBaseMagnitude_Implementation\
+UGameplayModMagnitudeCalculation::RelevantAttributesToCapture\
+FGameplayEffectAttributeCaptureDefinition::bSnapshot - when capture attribute, false at effect application / true at effect spec created\
+
+UGameplayModMagnitudeCalculation::GetCapturedAttributeMagnitude\
+FGameplayEffectSpec::CapturedSourceTags/CapturedTargetTags (FTagContainerAggregator)\
+FAggregatorEvaluateParameters\
+*Note* - MMC looks better in blueprints (select attribute to capture, factors, etc)\
