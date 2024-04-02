@@ -18,8 +18,6 @@ class AURA_API UAuraAttributeSet : public UAttributeSet {
 	GENERATED_BODY()
 
 public:
-	UAuraAttributeSet();
-
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	virtual void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;

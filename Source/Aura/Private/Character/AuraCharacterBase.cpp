@@ -18,6 +18,7 @@ void AAuraCharacterBase::BeginPlay() {
 void AAuraCharacterBase::InitializeDefaultAttributes() const {
 	InitializeAttributesEffect(DefaultPrimaryAttributes);
 	InitializeAttributesEffect(DefaultSecondaryAttributes);
+	InitializeAttributesEffect(DefaultVitalAttributes);
 }
 
 void AAuraCharacterBase::InitializeAttributesEffect(TSubclassOf<UGameplayEffect> Effect) const {
