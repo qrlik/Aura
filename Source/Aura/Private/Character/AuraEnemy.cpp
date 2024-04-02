@@ -14,6 +14,10 @@ AAuraEnemy::AAuraEnemy() {
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 }
 
+int32 AAuraEnemy::GetPlayerLevel() const {
+	return Level;
+}
+
 void AAuraEnemy::InitializeHighlight() {
 	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);

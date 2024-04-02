@@ -14,8 +14,14 @@ class AURA_API AAuraEnemy : public AAuraCharacterBase, public IHighlightInterfac
 public:
 	AAuraEnemy();
 
+	virtual int32 GetPlayerLevel() const override;
+
 protected:
 	virtual void InitializeHighlight() override;
 
 	virtual void EnableHighlightImpl(bool State) override;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Character Class Defaults")
+	int32 Level = 1;
 };
