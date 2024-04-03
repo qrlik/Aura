@@ -362,3 +362,7 @@ UGameplayModMagnitudeCalculation::GetCapturedAttributeMagnitude\
 FGameplayEffectSpec::CapturedSourceTags/CapturedTargetTags (FTagContainerAggregator)\
 FAggregatorEvaluateParameters\
 *Note* - MMC looks better in blueprints (select attribute to capture, factors, etc)\
+
+<br><br>
+
+# 9. Attribute Menu
