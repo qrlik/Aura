@@ -366,3 +366,6 @@ FAggregatorEvaluateParameters\
 <br><br>
 
 # 9. Attribute Menu
+
+## lesson 77. Attribute Menu - Text Value Row
+Named Slot - for acting as placeholders in templated UI\
