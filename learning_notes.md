@@ -369,3 +369,6 @@ FAggregatorEvaluateParameters\
 
 ## lesson 77. Attribute Menu - Text Value Row
 Named Slot - for acting as placeholders in templated UI\
+
+## lesson 79. Attribute Menu - Construction
+Wrap Box
