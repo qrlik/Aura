@@ -375,3 +375,6 @@ Wrap Box\
 
 ## lesson 83. Closing the Attribute Menu
 Event Dispatches\
+
+## lesson 85. Gameplay Tags Singleton
+UGameplayTagsManager::AddNativeGameplayTag\
