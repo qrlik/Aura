@@ -378,3 +378,7 @@ Event Dispatches\
 
 ## lesson 85. Gameplay Tags Singleton
 UGameplayTagsManager::AddNativeGameplayTag\
+
+## lesson 86. Aura Asset Manager
+UAssetManager\
+DefaultEngine.ini - AssetManagerClassName=/Script/Aura.AuraAssetManager\

@@ -3,13 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 
 class AURA_API AuraGameplayTags {
 public:
-	static const AuraGameplayTags& Get();
+	static AuraGameplayTags& Get();
+	static void InitializeNativeTags();
+
+	FGameplayTag Attributes_Secondary_Armor;
 
 private:
-	AuraGameplayTags();
+	//AuraGameplayTags();
 
 	static AuraGameplayTags GameplayTags;
 };

@@ -6,10 +6,15 @@
 
 AuraGameplayTags AuraGameplayTags::GameplayTags;
 
-const AuraGameplayTags& AuraGameplayTags::Get() {
+AuraGameplayTags& AuraGameplayTags::Get() {
 	return GameplayTags;
 }
 
-AuraGameplayTags::AuraGameplayTags() {
-	UGameplayTagsManager::Get().AddNativeGameplayTag(FName{ "Attributes.Secondary.Armor" }, FString{ "Reduces damage taken, improves Block Chance" });
+void AuraGameplayTags::InitializeNativeTags() {
+	GameplayTags.Attributes_Secondary_Armor = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName{ "Attributes.Secondary.Armor" }, FString{ "Reduces damage taken, improves Block Chance" });
 }
+
+//AuraGameplayTags::AuraGameplayTags() {
+// InitializeNativeTags();
+//}
