@@ -371,4 +371,7 @@ FAggregatorEvaluateParameters\
 Named Slot - for acting as placeholders in templated UI\
 
 ## lesson 79. Attribute Menu - Construction
-Wrap Box
+Wrap Box\
+
+## lesson 83. Closing the Attribute Menu
+Event Dispatches\
