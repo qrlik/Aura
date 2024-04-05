@@ -380,5 +380,9 @@ Event Dispatches\
 UGameplayTagsManager::AddNativeGameplayTag\
 
 ## lesson 86. Aura Asset Manager
-UAssetManager\
+UAssetManager - framework for managing Assets that can divide content into chunks.\
+Provides a set of tools to help audit disk and memory usage\
 DefaultEngine.ini - AssetManagerClassName=/Script/Aura.AuraAssetManager\
+
+## lesson 88. Attribute Info Data Asset
+UDataAsset - asset that stores data related to a particular system in an instance of its class\
