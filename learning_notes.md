@@ -386,3 +386,10 @@ DefaultEngine.ini - AssetManagerClassName=/Script/Aura.AuraAssetManager\
 
 ## lesson 88. Attribute Info Data Asset
 UDataAsset - asset that stores data related to a particular system in an instance of its class\
+
+## lesson 90. Aura Ability System Blueprint Library
+UBlueprintFunctionLibrary\
+BlueprintPure - not affect the owning object in any way and can be executed in a Blueprint or Level Blueprint graph.\
+*Do not cache* their results, therefore should be cautious when doing any non-trivial amount of work\
+UGameplayStatics::GetPlayerController\
+*Note* - looks better to make singleton like WidgetsDataSystem where store all WidgetDataController\
