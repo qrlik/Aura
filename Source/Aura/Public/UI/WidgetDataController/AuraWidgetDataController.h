@@ -29,7 +29,7 @@ struct FWidgetDataControllerParams {
 	TObjectPtr<UAuraAttributeSet> AttributeSet;
 };
 
-UCLASS(Abstract)
+UCLASS(Abstract, BlueprintType, Blueprintable)
 class AURA_API UAuraWidgetDataController : public UObject {
 	GENERATED_BODY()
 
@@ -38,6 +38,8 @@ public:
 	void SetWidgetDataControllerParams(const FWidgetDataControllerParams& Params);
 
 	void Initialize();
+
+	bool IsValid() const;
 
 protected:
 	template <typename ClassType>

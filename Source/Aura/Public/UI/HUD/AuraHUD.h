@@ -8,6 +8,7 @@
 
 struct FWidgetDataControllerParams;
 class UAuraUserWidget;
+class UAttributeWidgetDataController;
 class UOverlayWidgetDataController;
 
 UCLASS()
@@ -15,25 +16,36 @@ class AURA_API AAuraHUD : public AHUD {
 	GENERATED_BODY()
 
 public:
-	UOverlayWidgetDataController* GetOverlayWidgetDataController(const FWidgetDataControllerParams& Params);
+	UOverlayWidgetDataController* GetOverlayWidgetDataController() const;
+	UAttributeWidgetDataController* GetAttributeMenuWidgetDataController() const;
 
-	void UpdateOverlay();
+	void UpdateWidgetsDataControllers() const;
 
 protected:
 	virtual void BeginPlay() override;
 
 private:
-	void InitOverlay();
+	void CreateOverlay();
+	void CreateWidgets();
+	void CreateWidgetsDataControllers();
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UAuraUserWidget> OverlayWidgetClass;
+	void Initialize();
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UOverlayWidgetDataController> OverlayWidgetDataControllerClass;
+	UPROPERTY(EditDefaultsOnly, Category = "HUD|Data Controllers")
+	TSubclassOf<UOverlayWidgetDataController> OverlayDataControllerClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "HUD|Data Controllers")
+	TSubclassOf<UAttributeWidgetDataController> AttributeMenuDataControllerClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "HUD")
+	TSubclassOf<UAuraUserWidget> OverlayClass;
+
+	UPROPERTY()
+	TObjectPtr<UAttributeWidgetDataController> AttributeMenuDataController;
+	UPROPERTY()
+	TObjectPtr<UOverlayWidgetDataController> OverlayDataController;
 	UPROPERTY()
 	TObjectPtr<UAuraUserWidget> OverlayWidget;
 
-	UPROPERTY()
-	TObjectPtr<UOverlayWidgetDataController> OverlayWidgetDataController;
+	bool bInitialized = false;
 };

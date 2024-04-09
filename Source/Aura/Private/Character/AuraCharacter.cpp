@@ -28,28 +28,32 @@ int32 AAuraCharacter::GetPlayerLevel() const {
 void AAuraCharacter::PossessedBy(AController* NewController) {
 	Super::PossessedBy(NewController);
 
-	UpdateAbilitySystemComponent();
-	InitializeDefaultAttributes();
+	if (UpdateAbilitySystemComponent()) {
+		InitializeDefaultAttributes();
 
-	UpdateHUD();
+		UpdateHUD();
+	}
 }
 
 void AAuraCharacter::OnRep_PlayerState() {
 	Super::OnRep_PlayerState();
 
-	UpdateAbilitySystemComponent();
-	UpdateHUD();
+	if (UpdateAbilitySystemComponent()) {
+		UpdateHUD();
+	}
 }
 
-void AAuraCharacter::UpdateAbilitySystemComponent() {
+bool AAuraCharacter::UpdateAbilitySystemComponent() {
 	const auto* State = GetPlayerState<AAuraPlayerState>();
 
+	const auto OldAbilitySystemComponent = AbilitySystemComponent;
 	AbilitySystemComponent = (State) ? State->GetAbilitySystemComponent() : nullptr;
 	AttributeSet = (State) ? State->GetAttributeSet() : nullptr;
 
 	if (AbilitySystemComponent) {
 		AbilitySystemComponent->SetAvatarActor(this);
 	}
+	return OldAbilitySystemComponent != AbilitySystemComponent;
 }
 
 void AAuraCharacter::UpdateHUD() const {
@@ -57,8 +61,8 @@ void AAuraCharacter::UpdateHUD() const {
 		return;
 	}
 	if (const auto* PlayerController = GetController<AAuraPlayerController>()) {
-		if (auto* HUD = PlayerController->GetHUD<AAuraHUD>()) {
-			HUD->UpdateOverlay();
+		if (const auto* HUD = PlayerController->GetHUD<AAuraHUD>()) {
+			HUD->UpdateWidgetsDataControllers();
 		}
 	}
 }

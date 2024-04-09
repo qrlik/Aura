@@ -9,10 +9,18 @@
 #include "UI/WidgetDataController/OverlayWidgetDataController.h"
 
 UOverlayWidgetDataController* UAuraAbilitySystemLibrary::GetOverlayWidgetDataController(const UObject* WorldContexObject) {
-	if (auto* PC = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(WorldContexObject, 0))) {
-		if (auto* HUD = PC->GetHUD<AAuraHUD>()) {
-			const FWidgetDataControllerParams Params{ PC };
-			return HUD->GetOverlayWidgetDataController(Params);
+	if (const auto* PC = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(WorldContexObject, 0))) {
+		if (const auto* HUD = PC->GetHUD<AAuraHUD>()) {
+			return HUD->GetOverlayWidgetDataController();
+		}
+	}
+	return nullptr;
+}
+
+UAttributeWidgetDataController* UAuraAbilitySystemLibrary::GetAttributeMenuWidgetDataController(const UObject* WorldContexObject) {
+	if (const auto* PC = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(WorldContexObject, 0))) {
+		if (const auto* HUD = PC->GetHUD<AAuraHUD>()) {
+			return HUD->GetAttributeMenuWidgetDataController();
 		}
 	}
 	return nullptr;

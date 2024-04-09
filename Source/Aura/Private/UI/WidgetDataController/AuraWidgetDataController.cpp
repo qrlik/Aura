@@ -26,11 +26,15 @@ void UAuraWidgetDataController::SetWidgetDataControllerParams(const FWidgetDataC
 }
 
 void UAuraWidgetDataController::Initialize() {
-	if (AbilitySystemComponent && AttributeSet) {
+	if (IsValid()) {
 		BindCallbacksToDependencies();
 		BroadcastInitialValues();
 	}
 	InitializeImpl();
+}
+
+bool UAuraWidgetDataController::IsValid() const {
+	return AbilitySystemComponent && AttributeSet;
 }
 
 void UAuraWidgetDataController::BroadcastInitialValues() {

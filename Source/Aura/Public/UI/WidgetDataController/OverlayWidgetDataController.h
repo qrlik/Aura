@@ -34,7 +34,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float,
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEffectTagAppliedToSelfSignature, const FMessageWidgetByTagRow&, Row);
 
-UCLASS(BlueprintType, Blueprintable)
+UCLASS()
 class AURA_API UOverlayWidgetDataController : public UAuraWidgetDataController {
 	GENERATED_BODY()
 

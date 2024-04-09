@@ -392,4 +392,4 @@ UBlueprintFunctionLibrary\
 BlueprintPure - not affect the owning object in any way and can be executed in a Blueprint or Level Blueprint graph.\
 *Do not cache* their results, therefore should be cautious when doing any non-trivial amount of work\
 UGameplayStatics::GetPlayerController\
-*Note* - looks better to make singleton like WidgetsDataSystem where store all WidgetDataController\
+*Note* - looks better to make singleton like WidgetsDataSystem where store all WidgetDataControllers\

@@ -4,39 +4,60 @@
 
 #include "Player/AuraPlayerController.h"
 #include "UI/AuraUserWidget.h"
+#include "UI/WidgetDataController/AttributeWidgetDataController.h"
 #include "UI/WidgetDataController/OverlayWidgetDataController.h"
 
-UOverlayWidgetDataController* AAuraHUD::GetOverlayWidgetDataController(const FWidgetDataControllerParams& Params) {
-	if (!OverlayWidgetDataController) {
-		checkf(OverlayWidgetDataControllerClass, TEXT("Overlay Widget Data Controller Class uninitialized"));
-		OverlayWidgetDataController = NewObject<UOverlayWidgetDataController>(this, OverlayWidgetDataControllerClass);
-	}
-	OverlayWidgetDataController->SetWidgetDataControllerParams(Params);
-	return OverlayWidgetDataController;
+UOverlayWidgetDataController* AAuraHUD::GetOverlayWidgetDataController() const {
+	return OverlayDataController;
 }
 
-void AAuraHUD::UpdateOverlay() {
-	if (!OverlayWidget) {
+UAttributeWidgetDataController* AAuraHUD::GetAttributeMenuWidgetDataController() const {
+	return AttributeMenuDataController;
+}
+
+void AAuraHUD::UpdateWidgetsDataControllers() const {
+	if (!bInitialized) {
 		return;
 	}
 	const FWidgetDataControllerParams Params{ Cast<AAuraPlayerController>(GetOwningPlayerController()) };
-	auto* WidgetDataController = GetOverlayWidgetDataController(Params);
+	OverlayDataController->SetWidgetDataControllerParams(Params);
+	AttributeMenuDataController->SetWidgetDataControllerParams(Params);
 
-	OverlayWidget->SetWidgetDataController(WidgetDataController);
-	WidgetDataController->Initialize();
+	OverlayDataController->Initialize();
+	AttributeMenuDataController->Initialize();
 }
 
 void AAuraHUD::BeginPlay() {
 	Super::BeginPlay();
 
-	InitOverlay();
-	UpdateOverlay();
+	CreateWidgetsDataControllers();
+	CreateWidgets();
+
+	Initialize();
 }
 
-void AAuraHUD::InitOverlay() {
-	if (!OverlayWidget) {
-		checkf(OverlayWidgetClass, TEXT("Overlay Widget Class uninitialized"));
-		OverlayWidget = CreateWidget<UAuraUserWidget>(GetWorld(), OverlayWidgetClass);
-		OverlayWidget->AddToViewport();
-	}
+void AAuraHUD::CreateWidgetsDataControllers() {
+	checkf(OverlayDataControllerClass, TEXT("Overlay Data Widget Controller class uninitialized"));
+	OverlayDataController = NewObject<UOverlayWidgetDataController>(this, OverlayDataControllerClass);
+	checkf(AttributeMenuDataControllerClass, TEXT("Attribute Menu Widget Data Controller class uninitialized"));
+	AttributeMenuDataController = NewObject<UAttributeWidgetDataController>(this, AttributeMenuDataControllerClass);
 }
+
+void AAuraHUD::CreateWidgets() {
+	CreateOverlay();
+}
+
+void AAuraHUD::CreateOverlay() {
+	checkf(OverlayClass, TEXT("Overlay Widget Class uninitialized"));
+	OverlayWidget = CreateWidget<UAuraUserWidget>(GetWorld(), OverlayClass);
+	OverlayWidget->AddToViewport();
+	OverlayWidget->SetWidgetDataController(OverlayDataController);
+}
+
+void AAuraHUD::Initialize() {
+	ensure(!bInitialized);
+	bInitialized = true;
+
+	UpdateWidgetsDataControllers();
+}
+
