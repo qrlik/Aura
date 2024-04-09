@@ -2,7 +2,7 @@
 
 #include "AbilitySystem/Data/AttributeInfo.h"
 
-const FAuraAttributeInfo& UAttributeInfo::FindAttributeInfoByTag(const FGameplayTag& Tag, bool bLogNotFound) const {
+FAuraAttributeInfo UAttributeInfo::FindAttributeInfoByTag(const FGameplayTag& Tag, bool bLogNotFound) const {
 	for (const auto& AttributeInfo : AttributesInformation) {
 		if (AttributeInfo.AttributeTag.MatchesTagExact(Tag)) {
 			return AttributeInfo;
@@ -12,5 +12,5 @@ const FAuraAttributeInfo& UAttributeInfo::FindAttributeInfoByTag(const FGameplay
 	if (bLogNotFound) {
 		UE_LOG(LogTemp, Error, TEXT("UAttributeInfo can't find Info for AttributeTag %s"), *Tag.ToString())
 	}
-	return EmptyInfo;
+	return FAuraAttributeInfo{};
 }

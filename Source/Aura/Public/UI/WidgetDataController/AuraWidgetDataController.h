@@ -41,11 +41,13 @@ public:
 
 	bool IsValid() const;
 
+	UFUNCTION(BlueprintCallable)
+	virtual void BroadcastInitialValues();
+
 protected:
 	template <typename ClassType>
 	void BindAttributeValueChange(FGameplayAttribute Attribute, void (ClassType::*Function)(const FOnAttributeChangeData&) const);
 
-	virtual void BroadcastInitialValues();
 	virtual void BindCallbacksToDependencies();
 	virtual void InitializeImpl();
 
