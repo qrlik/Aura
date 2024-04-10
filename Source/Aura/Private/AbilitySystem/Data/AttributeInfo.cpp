@@ -2,6 +2,10 @@
 
 #include "AbilitySystem/Data/AttributeInfo.h"
 
+const TArray<FAuraAttributeInfo>& UAttributeInfo::GetAttributesInformation() const {
+	return AttributesInformation;
+}
+
 FAuraAttributeInfo UAttributeInfo::FindAttributeInfoByTag(const FGameplayTag& Tag, bool bLogNotFound) const {
 	for (const auto& AttributeInfo : AttributesInformation) {
 		if (AttributeInfo.AttributeTag.MatchesTagExact(Tag)) {

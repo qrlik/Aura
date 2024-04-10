@@ -9,7 +9,7 @@
 struct FAuraAttributeInfo;
 class UAttributeInfo;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSignature, const FAuraAttributeInfo&, Info);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAttributeInfoSignature, const FAuraAttributeInfo&, Info, float, Value);
 
 UCLASS()
 class AURA_API UAttributeWidgetDataController : public UAuraWidgetDataController {

@@ -2,14 +2,14 @@
 
 #include "UI/WidgetDataController/AttributeWidgetDataController.h"
 
-#include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
-#include "AuraGameplayTags.h"
+#include "AbilitySystem/AuraAttributeSet.h"
 
 void UAttributeWidgetDataController::BroadcastInitialValues() {
-	auto Info = AttributeInformation->FindAttributeInfoByTag(AuraGameplayTags::Get().Attributes_Primary_Strength);
-	Info.AttributeValue = AttributeSet->GetStrength();
-	AttributeInfoDelegate.Broadcast(Info);
+	for (const auto& AttributeInfo : AttributeInformation->GetAttributesInformation()) {
+		const auto Value = AttributeInfo.Attribute.GetNumericValueChecked(AttributeSet);
+		AttributeInfoDelegate.Broadcast(AttributeInfo, Value);
+	}
 }
 
 void UAttributeWidgetDataController::BindCallbacksToDependencies() {
