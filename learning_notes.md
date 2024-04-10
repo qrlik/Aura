@@ -344,14 +344,14 @@ UAttributeSet::PreAttributeChange - New Value affects **only** CurrentValue and 
 
 ## lesson 64. Initialize Attributes from a Data Table
 ASC property window - Default Starting Data\
-Data Table - Attribute Meta Data (FAttributeMetaData) -> RowName [AttributeSetClassName].[AttributeName]\
+Data Table - Attribute Meta Data (FAttributeMetaData) -> RowName [AttributeSetClassName].[AttributeName]
 
 ## lesson 66. Attribute Based Modifiers
 ## lesson 67. Modifier Order of Operations
-Clamping in PreAttribute[Base]Change called after **every** modifier applied\
+Clamping in PreAttribute[Base]Change called after **every** modifier applied
 
 ## lesson 68. Attribute Based Modifier Coefficients
-(Value + Pre Multiply Additive Value) * Coefficient + Post Multiply Additive Value\
+(Value + Pre Multiply Additive Value) * Coefficient + Post Multiply Additive Value
 
 ## lesson 73. Modifier Magnitude Calculations
 UGameplayModMagnitudeCalculation::CalculateBaseMagnitude_Implementation\
@@ -361,38 +361,48 @@ FGameplayEffectAttributeCaptureDefinition::bSnapshot - when capture attribute, f
 UGameplayModMagnitudeCalculation::GetCapturedAttributeMagnitude\
 FGameplayEffectSpec::CapturedSourceTags/CapturedTargetTags (FTagContainerAggregator)\
 FAggregatorEvaluateParameters\
-*Note* - MMC looks better in blueprints (select attribute to capture, factors, etc)\
+*Note* - MMC looks better in blueprints (select attribute to capture, factors, etc)
 
 <br><br>
 
 # 9. Attribute Menu
 
 ## lesson 77. Attribute Menu - Text Value Row
-Named Slot - for acting as placeholders in templated UI\
+Named Slot - for acting as placeholders in templated UI
 
 ## lesson 79. Attribute Menu - Construction
-Wrap Box\
+Wrap Box
 
 ## lesson 83. Closing the Attribute Menu
-Event Dispatches\
+Event Dispatches
 
 ## lesson 85. Gameplay Tags Singleton
-UGameplayTagsManager::AddNativeGameplayTag\
+UGameplayTagsManager::AddNativeGameplayTag
 
 ## lesson 86. Aura Asset Manager
 UAssetManager - framework for managing Assets that can divide content into chunks.\
 Provides a set of tools to help audit disk and memory usage\
-DefaultEngine.ini - AssetManagerClassName=/Script/Aura.AuraAssetManager\
+DefaultEngine.ini - AssetManagerClassName=/Script/Aura.AuraAssetManager
 
 ## lesson 88. Attribute Info Data Asset
-UDataAsset - asset that stores data related to a particular system in an instance of its class\
+UDataAsset - asset that stores data related to a particular system in an instance of its class
 
 ## lesson 90. Aura Ability System Blueprint Library
 UBlueprintFunctionLibrary\
 BlueprintPure - not affect the owning object in any way and can be executed in a Blueprint or Level Blueprint graph.\
 *Do not cache* their results, therefore should be cautious when doing any non-trivial amount of work\
 UGameplayStatics::GetPlayerController\
-*Note* - looks better to make singleton like WidgetsDataSystem where store all WidgetDataControllers\
+*Note* - looks better to make singleton like WidgetsDataSystem where store all WidgetDataControllers
 
 ## lesson 94. Mapping Tags to Attributes
-DECLARE_DELEGATE_RetVal\
+DECLARE_DELEGATE_RetVal
+
+<br><br>
+
+# 10. Gameplay Abilities
+
+## lesson 96. Gameplay Abilities
+UGameplayAbility -> granted to ASC on the server -> FGameplayAbilitySpec (replicated to clients)\
+UAbilityTask\
+Condition, Cost, Cooldown\
+Activate, End, Cancel\
