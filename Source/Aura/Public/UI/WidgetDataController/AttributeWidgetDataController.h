@@ -25,4 +25,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAttributeInfo> AttributeInformation;
+
+private:
+	void OnAttributeChange(const FOnAttributeChangeData& ChangedAttribute) const;
 };

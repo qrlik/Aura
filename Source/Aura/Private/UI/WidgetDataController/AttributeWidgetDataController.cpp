@@ -13,4 +13,14 @@ void UAttributeWidgetDataController::BroadcastInitialValues() {
 }
 
 void UAttributeWidgetDataController::BindCallbacksToDependencies() {
+	for (const auto& AttributeInfo : AttributeInformation->GetAttributesInformation()) {
+		auto& ChangeDelegate = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeInfo.Attribute);
+		ensure(!ChangeDelegate.IsBoundToObject(this));
+		ChangeDelegate.AddUObject(this, &UAttributeWidgetDataController::OnAttributeChange);
+	}
+}
+
+void UAttributeWidgetDataController::OnAttributeChange(const FOnAttributeChangeData& ChangedAttribute) const {
+	const auto& AttributeInfo = AttributeInformation->FindAttributeInfoByAttribute(ChangedAttribute.Attribute);
+	AttributeInfoDelegate.Broadcast(AttributeInfo, ChangedAttribute.NewValue);
 }
