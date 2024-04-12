@@ -405,10 +405,48 @@ DECLARE_DELEGATE_RetVal
 UGameplayAbility -> granted to ASC on the server -> FGameplayAbilitySpec (replicated to clients)\
 UAbilityTask\
 Condition, Cost, Cooldown\
-Activate, End, Cancel\
+Activate, End, Cancel
 
 ## lesson 97. Granting Abilities
-UAbilitySystemComponent::GiveAbility
-UAbilitySystemComponent::GiveAbilityAndActivateOnce
-UGameplayAbility::ActivateAbility
+UAbilitySystemComponent::GiveAbility\
+UAbilitySystemComponent::GiveAbilityAndActivateOnce\
+UGameplayAbility::ActivateAbility\
 UGameplayAbility::OnEndAbility
+
+## lesson 98. Settings on Gameplay Abilities
+**Ability Tags** - \
+*CancelAbilitiesWithTag* - abilities with these tags are cancelled when this ability is executed\
+*BlockAbilitiesWithTag* - abilities with these tags are blocked while this ability is active\
+*ActivationOwnedTags* - tags to apply to activating owner while this ability is active\
+*ActivationRequiredTags* - can only be activated if the activating actor/component has **all** of these tags\
+*ActivationBlockedTags* - blocked if the activating actor/component has **any** of these tags\
+Used in direct activation and gameplay event activation\
+
+*Source[Target]RequiredTags* - can only be activated if the source[target] actor/component has all of these tags\
+*Source[Target]BlockedTags* - blocked if the source[target] actor/component has any of these tags\
+Used only in gameplay event activation (used event payload tags)\
+
+**Instancing Policy** -\
+EGameplayAbilityInstancingPolicy\
+*InstancedPerActor* - each actor gets their own instance of this ability. State can be saved, replication is possible\
+*InstancedPerExecution* - instance this ability each time it is executed. Replication possible but not recommended\
+*NonInstanced* - ability is never instanced. Anything that executes the ability is operating on the CDO\
+
+**Net Execution Policy** -\
+EGameplayAbilityNetExecutionPolicy\
+*LocalPredicted* - run predictively on the local client, then on server. server can roll back\
+*LocalOnly* - run only on the client or server that has local control. Good for cosmetic things that not affect gameplay logic\
+*ServerInitiated* - initiated by the server, but will also run on the local client if one exists\
+*ServerOnly* - only run on the server. Good for sthg like passive abilities, what exist all time. Or for any AI/Bots/NPC\
+
+**Things Not to Use Usually**\
+**Replication Policy**\
+useless according to https://epicgames.ent.box.com/s/m1egifkxv3he3u3xezb9hzbgroxyhx89\
+GA already are replicated alredy to owning clients (not for simulated proxy, use for it GE or GC instead)\
+
+**Server Respects Remote Ability Cancellation**
+Enabled by default. ¯\_(ツ)_/¯\
+Client can cancel server-version of ability can be canceled by client-version. Not good idea in most cases\
+
+**Replicate Input Directly**
+Not good thing to use according to epic. Prefer to use Generic Replicated Events\

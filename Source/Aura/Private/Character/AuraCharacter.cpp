@@ -61,7 +61,6 @@ void AAuraCharacter::UpdateHUD() const {
 	if (!GetPlayerState<AAuraPlayerState>()) {
 		return;
 	}
-	// to do check when >2 players
 	if (const auto* PlayerController = GetController<AAuraPlayerController>()) {
 		if (const auto* HUD = PlayerController->GetHUD<AAuraHUD>()) {
 			HUD->UpdateWidgetsDataControllers();
