@@ -406,3 +406,9 @@ UGameplayAbility -> granted to ASC on the server -> FGameplayAbilitySpec (replic
 UAbilityTask\
 Condition, Cost, Cooldown\
 Activate, End, Cancel\
+
+## lesson 97. Granting Abilities
+UAbilitySystemComponent::GiveAbility
+UAbilitySystemComponent::GiveAbilityAndActivateOnce
+UGameplayAbility::ActivateAbility
+UGameplayAbility::OnEndAbility

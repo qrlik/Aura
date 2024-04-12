@@ -21,6 +21,10 @@ void AAuraCharacterBase::InitializeDefaultAttributes() const {
 	InitializeAttributesEffect(DefaultVitalAttributes);
 }
 
+void AAuraCharacterBase::AddCharacterAbilities() const {
+	AbilitySystemComponent->AddAbilities(StartupAbilities);
+}
+
 void AAuraCharacterBase::InitializeAttributesEffect(TSubclassOf<UGameplayEffect> Effect) const {
 	check(AbilitySystemComponent);
 	check(Effect);
@@ -33,6 +37,6 @@ UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const {
 	return AbilitySystemComponent;
 }
 
-UAttributeSet* AAuraCharacterBase::GetAttributeSet() const {
+UAuraAttributeSet* AAuraCharacterBase::GetAttributeSet() const {
 	return AttributeSet;
 }

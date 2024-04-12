@@ -2,7 +2,8 @@
 
 #include "Character/AuraCharacter.h"
 
-#include "AbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/AuraAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
@@ -30,7 +31,7 @@ void AAuraCharacter::PossessedBy(AController* NewController) {
 
 	if (UpdateAbilitySystemComponent()) {
 		InitializeDefaultAttributes();
-
+		AddCharacterAbilities();
 		UpdateHUD();
 	}
 }
@@ -47,8 +48,8 @@ bool AAuraCharacter::UpdateAbilitySystemComponent() {
 	const auto* State = GetPlayerState<AAuraPlayerState>();
 
 	const auto OldAbilitySystemComponent = AbilitySystemComponent;
-	AbilitySystemComponent = (State) ? State->GetAbilitySystemComponent() : nullptr;
-	AttributeSet = (State) ? State->GetAttributeSet() : nullptr;
+	AbilitySystemComponent = (State) ? Cast<UAuraAbilitySystemComponent>(State->GetAbilitySystemComponent()) : nullptr;
+	AttributeSet = (State) ? Cast<UAuraAttributeSet>(State->GetAttributeSet()) : nullptr;
 
 	if (AbilitySystemComponent) {
 		AbilitySystemComponent->SetAvatarActor(this);
@@ -60,6 +61,7 @@ void AAuraCharacter::UpdateHUD() const {
 	if (!GetPlayerState<AAuraPlayerState>()) {
 		return;
 	}
+	// to do check when >2 players
 	if (const auto* PlayerController = GetController<AAuraPlayerController>()) {
 		if (const auto* HUD = PlayerController->GetHUD<AAuraHUD>()) {
 			HUD->UpdateWidgetsDataControllers();

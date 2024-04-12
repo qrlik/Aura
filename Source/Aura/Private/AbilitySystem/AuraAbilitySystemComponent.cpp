@@ -8,6 +8,14 @@ void UAuraAbilitySystemComponent::InitializeComponent() {
 	BindDelegates();
 }
 
+void UAuraAbilitySystemComponent::AddAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abilities) {
+	for (const auto AbilityClass : Abilities) {
+		FGameplayAbilitySpec Spec(AbilityClass, 1);
+		// GiveAbility(Spec);
+		GiveAbilityAndActivateOnce(Spec);
+	}
+}
+
 void UAuraAbilitySystemComponent::EffectAppliedToSelf(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
                                                       FActiveGameplayEffectHandle ActiveEffect) const {
 	FGameplayTagContainer TagContainer;

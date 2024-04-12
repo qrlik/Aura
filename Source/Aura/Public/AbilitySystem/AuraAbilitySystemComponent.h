@@ -15,6 +15,8 @@ class AURA_API UAuraAbilitySystemComponent : public UAbilitySystemComponent {
 public:
 	virtual void InitializeComponent() override;
 
+	void AddAbilities(const TArray<TSubclassOf<UGameplayAbility>>& Abilities);
+
 	FEffectAssetTagsSignature OnEffectAppliedToSelf;
 
 protected:
