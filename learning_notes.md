@@ -441,12 +441,12 @@ EGameplayAbilityNetExecutionPolicy\
 
 **Things Not to Use Usually**\
 **Replication Policy**\
-useless according to https://epicgames.ent.box.com/s/m1egifkxv3he3u3xezb9hzbgroxyhx89\
-GA already are replicated alredy to owning clients (not for simulated proxy, use for it GE or GC instead)\
+useless according to https://epicgames.ent.box.com/s/m1egifkxv3he3u3xezb9hzbgroxyhx89 \
+GA are replicated already to owning clients (for simulated proxy use GE or GC instead)
 
-**Server Respects Remote Ability Cancellation**
-Enabled by default. ¯\_(ツ)_/¯\
-Client can cancel server-version of ability can be canceled by client-version. Not good idea in most cases\
+**Server Respects Remote Ability Cancellation**\
+Enabled by default. ¯\\_(ツ)_/¯ \
+Client can cancel server-version of ability can be canceled by client-version. Not good idea in most cases
 
-**Replicate Input Directly**
-Not good thing to use according to epic. Prefer to use Generic Replicated Events\
+**Replicate Input Directly**\
+Not good thing to use according to epic. Prefer to use Generic Replicated Events
