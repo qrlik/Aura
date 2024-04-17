@@ -2,9 +2,9 @@
 
 #include "Player/AuraPlayerController.h"
 
-#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/InputComponent.h"
+#include "Input/AuraInputComponent.h"
 #include "Interaction/HighlightInterface.h"
 
 AAuraPlayerController::AAuraPlayerController() {
@@ -26,8 +26,22 @@ void AAuraPlayerController::BeginPlay() {
 void AAuraPlayerController::SetupInputComponent() {
 	Super::SetupInputComponent();
 
-	auto* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+	auto* AuraInputComponent = CastChecked<UAuraInputComponent>(InputComponent);
+	AuraInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+	AuraInputComponent->BindInputActionsToTags(InputConfig, this, &ThisClass::InputTagPressed, &ThisClass::InputTagReleased,
+	                                           &ThisClass::InputTagHeld);
+}
+
+void AAuraPlayerController::InputTagPressed(FGameplayTag Tag) {
+	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *Tag.ToString());
+}
+
+void AAuraPlayerController::InputTagReleased(FGameplayTag Tag) {
+	GEngine->AddOnScreenDebugMessage(2, 3.f, FColor::Blue, *Tag.ToString());
+}
+
+void AAuraPlayerController::InputTagHeld(FGameplayTag Tag) {
+	GEngine->AddOnScreenDebugMessage(3, 3.f, FColor::Green, *Tag.ToString());
 }
 
 void AAuraPlayerController::CursorTrace() {

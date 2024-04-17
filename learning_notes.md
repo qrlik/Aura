@@ -450,3 +450,6 @@ Client can cancel server-version of ability can be canceled by client-version. N
 
 **Replicate Input Directly**\
 Not good thing to use according to epic. Prefer to use Generic Replicated Events
+
+## lesson 101. Callbacks for Ability Input
+ThisClass typedef

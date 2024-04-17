@@ -6,8 +6,10 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+struct FGameplayTag;
 struct FInputActionValue;
 class IHighlightInterface;
+class UAuraInputConfig;
 class UInputAction;
 class UInputMappingContext;
 
@@ -25,6 +27,10 @@ protected:
 	virtual void SetupInputComponent() override;
 
 private:
+	void InputTagPressed(FGameplayTag Tag);
+	void InputTagReleased(FGameplayTag Tag);
+	void InputTagHeld(FGameplayTag Tag);
+
 	void CursorTrace();
 	void Move(const FInputActionValue& Value);
 
@@ -35,6 +41,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UAuraInputConfig> InputConfig;
 
 	TScriptInterface<IHighlightInterface> HighlightedObject;
 };
