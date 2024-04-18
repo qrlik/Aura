@@ -9,6 +9,7 @@
 struct FGameplayTag;
 struct FInputActionValue;
 class IHighlightInterface;
+class UAuraAbilitySystemComponent;
 class UAuraInputConfig;
 class UInputAction;
 class UInputMappingContext;
@@ -35,6 +36,10 @@ private:
 	void Move(const FInputActionValue& Value);
 
 	void SetupInput();
+	void SetupAbilitySystemComponent();
+
+	UPROPERTY()
+	TObjectPtr<UAuraAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> AuraContext;

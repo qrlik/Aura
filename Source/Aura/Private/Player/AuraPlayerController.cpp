@@ -2,7 +2,9 @@
 
 #include "Player/AuraPlayerController.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/InputComponent.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/HighlightInterface.h"
@@ -21,6 +23,7 @@ void AAuraPlayerController::BeginPlay() {
 	Super::BeginPlay();
 
 	SetupInput();
+	SetupAbilitySystemComponent();
 }
 
 void AAuraPlayerController::SetupInputComponent() {
@@ -33,15 +36,15 @@ void AAuraPlayerController::SetupInputComponent() {
 }
 
 void AAuraPlayerController::InputTagPressed(FGameplayTag Tag) {
-	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *Tag.ToString());
+	//AbilitySystemComponent->
 }
 
 void AAuraPlayerController::InputTagReleased(FGameplayTag Tag) {
-	GEngine->AddOnScreenDebugMessage(2, 3.f, FColor::Blue, *Tag.ToString());
+	AbilitySystemComponent->AbilityInputTagReleased(Tag);
 }
 
 void AAuraPlayerController::InputTagHeld(FGameplayTag Tag) {
-	GEngine->AddOnScreenDebugMessage(3, 3.f, FColor::Green, *Tag.ToString());
+	AbilitySystemComponent->AbilityInputTagHeld(Tag);
 }
 
 void AAuraPlayerController::CursorTrace() {
@@ -94,4 +97,9 @@ void AAuraPlayerController::SetupInput() {
 		check(AuraContext);
 		InputSubsystem->AddMappingContext(AuraContext, 0);
 	}
+}
+
+void AAuraPlayerController::SetupAbilitySystemComponent() {
+	AbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn()));
+	check(AbilitySystemComponent);
 }

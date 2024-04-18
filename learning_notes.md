@@ -453,3 +453,9 @@ Not good thing to use according to epic. Prefer to use Generic Replicated Events
 
 ## lesson 101. Callbacks for Ability Input
 ThisClass typedef
+
+## lesson 102. Activating Abilities
+FGameplayAbilitySpec::DynamicAbilityTags\
+UAbilitySystemComponent::GetActivatableAbilities\
+UAbilitySystemComponent::TryActivateAbility\
+UAbilitySystemComponent::AbilitySpecInputPressed

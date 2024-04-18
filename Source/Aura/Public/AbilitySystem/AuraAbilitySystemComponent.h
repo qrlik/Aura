@@ -19,6 +19,9 @@ public:
 
 	FEffectAssetTagsSignature OnEffectAppliedToSelf;
 
+	void AbilityInputTagReleased(const FGameplayTag& InputTag);
+	void AbilityInputTagHeld(const FGameplayTag& InputTag);
+
 protected:
 	void EffectAppliedToSelf(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
 	                         FActiveGameplayEffectHandle ActiveEffect) const;
