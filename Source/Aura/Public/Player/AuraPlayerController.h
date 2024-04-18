@@ -23,6 +23,7 @@ public:
 	AAuraPlayerController();
 
 	virtual void PlayerTick(float DeltaTime) override;
+	virtual void OnRep_PlayerState() override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -39,6 +40,9 @@ private:
 	void SetupInput();
 	void SetupAbilitySystemComponent();
 
+	void ProcessAutoRun();
+
+private:
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AbilitySystemComponent;
 

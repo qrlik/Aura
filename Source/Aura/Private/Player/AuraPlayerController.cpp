@@ -13,6 +13,7 @@
 #include "Input/AuraInputComponent.h"
 #include "Interaction/HighlightInterface.h"
 #include "Kismet/GameplayStatics.h"
+#include "Player/AuraPlayerState.h"
 
 AAuraPlayerController::AAuraPlayerController() {
 	bReplicates = true;
@@ -22,6 +23,13 @@ AAuraPlayerController::AAuraPlayerController() {
 void AAuraPlayerController::PlayerTick(float DeltaTime) {
 	CursorTrace();
 	Super::PlayerTick(DeltaTime);
+
+	ProcessAutoRun();
+}
+
+void AAuraPlayerController::OnRep_PlayerState() {
+	Super::OnRep_PlayerState();
+	SetupAbilitySystemComponent();
 }
 
 void AAuraPlayerController::BeginPlay() {
@@ -48,7 +56,9 @@ void AAuraPlayerController::InputTagPressed(FGameplayTag Tag) {
 }
 
 void AAuraPlayerController::InputTagReleased(FGameplayTag Tag) {
-	AbilitySystemComponent->AbilityInputTagReleased(Tag);
+	if (AbilitySystemComponent) {
+		AbilitySystemComponent->AbilityInputTagReleased(Tag);
+	}
 
 	if (Tag.MatchesTagExact(AuraGameplayTags::Get().Input_LMB)) {
 		const auto* ControlledPawn = GetPawn();
@@ -59,18 +69,23 @@ void AAuraPlayerController::InputTagReleased(FGameplayTag Tag) {
 					Spline->AddSplinePoint(PathPoint, ESplineCoordinateSpace::World, false);
 					DrawDebugSphere(GetWorld(), PathPoint, 8.f, 8, FColor::Green, false, 5.f);
 				}
+				if (!Path->PathPoints.IsEmpty()) {
+					CachedDestination = Path->PathPoints.Last();
+				}
 				Spline->UpdateSpline();
 				bAutoRunning = true;
-				FollowTime = 0.f;
 			}
 		}
+		FollowTime = 0.f;
 	}
 }
 
 void AAuraPlayerController::InputTagHeld(FGameplayTag Tag) {
 	if (Tag.MatchesTagExact(AuraGameplayTags::Get().Input_LMB)) {
 		if (bTargeting) {
-			AbilitySystemComponent->AbilityInputTagHeld(Tag);
+			if (AbilitySystemComponent) {
+				AbilitySystemComponent->AbilityInputTagHeld(Tag);
+			}
 		}
 		else {
 			FollowTime += GetWorld()->GetDeltaSeconds();
@@ -84,7 +99,7 @@ void AAuraPlayerController::InputTagHeld(FGameplayTag Tag) {
 			}
 		}
 	}
-	else {
+	else if (AbilitySystemComponent) {
 		AbilitySystemComponent->AbilityInputTagHeld(Tag);
 	}
 }
@@ -142,6 +157,20 @@ void AAuraPlayerController::SetupInput() {
 }
 
 void AAuraPlayerController::SetupAbilitySystemComponent() {
-	AbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn()));
-	check(AbilitySystemComponent);
+	if (const auto* State = GetPlayerState<AAuraPlayerState>()) {
+		AbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(State->GetAbilitySystemComponent());
+	}
+}
+
+void AAuraPlayerController::ProcessAutoRun() {
+	auto* ControllerPawn = GetPawn();
+	if (!ControllerPawn || !bAutoRunning) {
+		return;
+	}
+	const auto SplinePoint = Spline->FindLocationClosestToWorldLocation(ControllerPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+	const auto Direction = Spline->FindDirectionClosestToWorldLocation(SplinePoint, ESplineCoordinateSpace::World);
+	ControllerPawn->AddMovementInput(Direction);
+
+	const auto DistanceToDestination = (SplinePoint - CachedDestination).Length();
+	bAutoRunning = DistanceToDestination > AutoRunAcceptanceRadius;
 }

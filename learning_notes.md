@@ -469,3 +469,7 @@ UWorld::GetDeltaSeconds
 ## lesson 105. Setting Up Auto Running
 UNavigationSystemV1::FindPathToLocationSynchronously\
 USplineComponent::ClearSplinePoints
+
+## lesson 106. Implementing Auto Running
+USplineComponent::FindLocationClosestToWorldLocation\
+bAllowClientSideNavigation
