@@ -13,6 +13,7 @@ class UAuraAbilitySystemComponent;
 class UAuraInputConfig;
 class UInputAction;
 class UInputMappingContext;
+class USplineComponent;
 
 UCLASS()
 class AURA_API AAuraPlayerController : public APlayerController {
@@ -51,4 +52,15 @@ private:
 	TObjectPtr<UAuraInputConfig> InputConfig;
 
 	TScriptInterface<IHighlightInterface> HighlightedObject;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> Spline;
+	FVector CachedDestination = FVector::ZeroVector;
+	UPROPERTY(EditDefaultsOnly)
+	float AutoRunAcceptanceRadius = 50.f;
+	UPROPERTY(EditDefaultsOnly)
+	float ShortPressThreshold = 0.5f;
+	float FollowTime = 0.f;
+	bool bAutoRunning = false;
+	bool bTargeting = false;
 };

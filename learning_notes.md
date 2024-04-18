@@ -459,3 +459,9 @@ FGameplayAbilitySpec::DynamicAbilityTags\
 UAbilitySystemComponent::GetActivatableAbilities\
 UAbilitySystemComponent::TryActivateAbility\
 UAbilitySystemComponent::AbilitySpecInputPressed
+
+## lesson 103. Click To Move
+UAIBlueprintHelperLibrary::SimpleMoveToLocation (not work at client)
+
+## lesson 104. Setting Up Click to Move
+UWorld::GetDeltaSeconds
