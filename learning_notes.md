@@ -465,3 +465,7 @@ UAIBlueprintHelperLibrary::SimpleMoveToLocation (not work at client)
 
 ## lesson 104. Setting Up Click to Move
 UWorld::GetDeltaSeconds
+
+## lesson 105. Setting Up Auto Running
+UNavigationSystemV1::FindPathToLocationSynchronously\
+USplineComponent::ClearSplinePoints
