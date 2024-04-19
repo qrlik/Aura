@@ -67,7 +67,6 @@ void AAuraPlayerController::InputTagReleased(FGameplayTag Tag) {
 				Spline->ClearSplinePoints();
 				for (const auto& PathPoint : Path->PathPoints) {
 					Spline->AddSplinePoint(PathPoint, ESplineCoordinateSpace::World, false);
-					DrawDebugSphere(GetWorld(), PathPoint, 8.f, 8, FColor::Green, false, 5.f);
 				}
 				if (!Path->PathPoints.IsEmpty()) {
 					CachedDestination = Path->PathPoints.Last();
@@ -89,8 +88,7 @@ void AAuraPlayerController::InputTagHeld(FGameplayTag Tag) {
 		}
 		else {
 			FollowTime += GetWorld()->GetDeltaSeconds();
-			FHitResult CursorHit;
-			if (GetHitResultUnderCursor(ECC_Camera, false, CursorHit)) {
+			if (CursorHit.bBlockingHit) {
 				CachedDestination = CursorHit.ImpactPoint;
 			}
 			if (auto* ControlledPawn = GetPawn()) {
@@ -105,23 +103,21 @@ void AAuraPlayerController::InputTagHeld(FGameplayTag Tag) {
 }
 
 void AAuraPlayerController::CursorTrace() {
-	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Camera, false, CursorHit);
 	if (!CursorHit.bBlockingHit) {
 		return;
 	}
 
 	const TScriptInterface<IHighlightInterface> HighlightCandidate = CursorHit.GetActor();
-	if (HighlightCandidate) {
-		HighlightCandidate.GetInterface()->HighlightActor();
-		if (HighlightedObject && HighlightCandidate != HighlightedObject) {
-			HighlightedObject.GetInterface()->UnHighlightActor();
+	if (HighlightCandidate != HighlightedObject) {
+		if (HighlightedObject) {
+			HighlightedObject->UnHighlightActor();
 		}
+		if (HighlightCandidate) {
+			HighlightCandidate->HighlightActor();
+		}
+		HighlightedObject = HighlightCandidate;
 	}
-	else if (HighlightedObject) {
-		HighlightedObject.GetInterface()->UnHighlightActor();
-	}
-	HighlightedObject = HighlightCandidate;
 }
 
 void AAuraPlayerController::Move(const FInputActionValue& Value) {

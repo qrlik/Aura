@@ -40,8 +40,8 @@ void UAuraAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputT
 	}
 }
 
-void UAuraAbilitySystemComponent::EffectAppliedToSelf(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
-                                                      FActiveGameplayEffectHandle ActiveEffect) const {
+void UAuraAbilitySystemComponent::EffectAppliedToSelf_Implementation(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
+                                                                     FActiveGameplayEffectHandle ActiveEffect) const {
 	FGameplayTagContainer TagContainer;
 	EffectSpec.GetAllAssetTags(TagContainer);
 	OnEffectAppliedToSelf.Broadcast(TagContainer);

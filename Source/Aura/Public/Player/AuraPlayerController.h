@@ -56,6 +56,7 @@ private:
 	TObjectPtr<UAuraInputConfig> InputConfig;
 
 	TScriptInterface<IHighlightInterface> HighlightedObject;
+	FHitResult CursorHit;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
