@@ -168,7 +168,8 @@ DOREPLIFETIME[_CONDITION][_NOTIFY](Class, Var, [ConditionType], [NotifyType])\
 *COND_Never* - will never be replicated\
 *COND_NetGroup* - replicate to connections that are part of the same group the subobject is registered to. Not usable on properties.\
 
-*Note*: actor owner mean only authority or also autonomous? what benefit from replication only to authority on server?\
+*Note*: COND_AutonomousOnly is limited to pawn that are directly controlled by the PlayerController\
+COND_OwnerOnly is qualified for all actor whose most outer owner is PlayerController\
 
 **ELifetimeRepNotifyCondition**\
 *REPNOTIFY_OnChanged* - default\
