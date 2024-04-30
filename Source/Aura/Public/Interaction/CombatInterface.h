@@ -15,5 +15,6 @@ class AURA_API ICombatInterface {
 	GENERATED_BODY()
 
 public:
+	virtual FVector GetCombatSocketLocation() const;
 	virtual int32 GetPlayerLevel() const;
 };

@@ -37,6 +37,11 @@ UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const {
 	return AbilitySystemComponent;
 }
 
+FVector AAuraCharacterBase::GetCombatSocketLocation() const {
+	check(Weapon->DoesSocketExist(WeaponSocketName));
+	return Weapon->GetSocketLocation(WeaponSocketName);
+}
+
 UAuraAttributeSet* AAuraCharacterBase::GetAttributeSet() const {
 	return AttributeSet;
 }

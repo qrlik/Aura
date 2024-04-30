@@ -6,6 +6,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 
 AAuraProjectile::AAuraProjectile() {
+	bReplicates = true;
 	PrimaryActorTick.bCanEverTick = false;
 	Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
 	SetRootComponent(Sphere);

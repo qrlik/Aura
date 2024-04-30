@@ -21,6 +21,7 @@ public:
 	AAuraCharacterBase();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual FVector GetCombatSocketLocation() const override;
 	UAuraAttributeSet* GetAttributeSet() const;
 
 protected:
@@ -53,4 +54,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	UPROPERTY(EditDefaultsOnly)
+	FName WeaponSocketName;
 };
