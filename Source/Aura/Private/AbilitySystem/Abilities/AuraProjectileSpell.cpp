@@ -20,6 +20,7 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	if (!CombatInterface) {
 		return;
 	}
+
 	FTransform SpawnTransform;
 	SpawnTransform.SetLocation(CombatInterface->GetCombatSocketLocation());
 	auto* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform, Owner, CastChecked<APawn>(Owner),
