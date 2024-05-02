@@ -8,8 +8,15 @@
 void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                            const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+}
 
-	auto Mode = ActivationInfo.ActivationMode;
+void UAuraProjectileSpell::SpawnProjectile() {
+	if (!IsActive()) {
+		ensureMsgf(false, TEXT("UAuraProjectileSpell::SpawnProjectile for not active state"));
+		return;
+	}
+
+	const auto& ActivationInfo = GetCurrentActivationInfoRef();
 	if (!HasAuthority(&ActivationInfo)) {
 		return;
 	}
