@@ -6,8 +6,7 @@
 #include "Interaction/CombatInterface.h"
 
 void UAuraProjectileSpell::SpawnProjectile() {
-	if (!IsActive()) {
-		ensureMsgf(false, TEXT("UAuraProjectileSpell::SpawnProjectile for not active state"));
+	if (!ensure(IsActive())) {
 		return;
 	}
 
