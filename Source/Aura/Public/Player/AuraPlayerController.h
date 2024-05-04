@@ -36,13 +36,14 @@ private:
 
 	void CursorTrace();
 	void Move(const FInputActionValue& Value);
+	void Shift(const FInputActionValue& Value);
 
 	void SetupInput();
 	void SetupAbilitySystemComponent();
 
+	void CheckAutorunInput(FGameplayTag ReleasedTag);
 	void ProcessAutoRun();
 
-private:
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AbilitySystemComponent;
 
@@ -51,6 +52,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> ShiftAction;
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UAuraInputConfig> InputConfig;
@@ -68,4 +72,5 @@ private:
 	float FollowTime = 0.f;
 	bool bAutoRunning = false;
 	bool bTargeting = false;
+	bool bShifting = false;
 };

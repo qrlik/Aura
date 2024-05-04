@@ -43,6 +43,8 @@ void AAuraPlayerController::SetupInputComponent() {
 	Super::SetupInputComponent();
 
 	auto* AuraInputComponent = CastChecked<UAuraInputComponent>(InputComponent);
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Started, this, &AAuraPlayerController::Shift);
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Completed, this, &AAuraPlayerController::Shift);
 	AuraInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
 	AuraInputComponent->BindInputActionsToTags(InputConfig, this, &ThisClass::InputTagPressed, &ThisClass::InputTagReleased,
 	                                           &ThisClass::InputTagHeld);
@@ -59,29 +61,12 @@ void AAuraPlayerController::InputTagReleased(FGameplayTag Tag) {
 	if (AbilitySystemComponent) {
 		AbilitySystemComponent->AbilityInputTagReleased(Tag);
 	}
-
-	if (Tag.MatchesTagExact(AuraGameplayTags::Get().Input_LMB)) {
-		const auto* ControlledPawn = GetPawn();
-		if (!bTargeting && (FollowTime < ShortPressThreshold || FMath::IsNearlyEqual(FollowTime, ShortPressThreshold)) && ControlledPawn) {
-			if (auto* Path = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination)) {
-				Spline->ClearSplinePoints();
-				for (const auto& PathPoint : Path->PathPoints) {
-					Spline->AddSplinePoint(PathPoint, ESplineCoordinateSpace::World, false);
-				}
-				if (!Path->PathPoints.IsEmpty()) {
-					CachedDestination = Path->PathPoints.Last();
-				}
-				Spline->UpdateSpline();
-				bAutoRunning = true;
-			}
-		}
-		FollowTime = 0.f;
-	}
+	CheckAutorunInput(Tag);
 }
 
 void AAuraPlayerController::InputTagHeld(FGameplayTag Tag) {
 	if (Tag.MatchesTagExact(AuraGameplayTags::Get().Input_LMB)) {
-		if (bTargeting) {
+		if (bTargeting || bShifting) {
 			if (AbilitySystemComponent) {
 				AbilitySystemComponent->AbilityInputTagHeld(Tag);
 			}
@@ -103,7 +88,7 @@ void AAuraPlayerController::InputTagHeld(FGameplayTag Tag) {
 }
 
 void AAuraPlayerController::CursorTrace() {
-	GetHitResultUnderCursor(ECC_Camera, false, CursorHit);
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (!CursorHit.bBlockingHit) {
 		return;
 	}
@@ -137,6 +122,10 @@ void AAuraPlayerController::Move(const FInputActionValue& Value) {
 	ControlledPawn->AddMovementInput(RightDirection, AxisVector.X);
 }
 
+void AAuraPlayerController::Shift(const FInputActionValue& Value) {
+	bShifting = Value.Get<bool>();
+}
+
 void AAuraPlayerController::SetupInput() {
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
@@ -156,6 +145,34 @@ void AAuraPlayerController::SetupAbilitySystemComponent() {
 	if (const auto* State = GetPlayerState<AAuraPlayerState>()) {
 		AbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(State->GetAbilitySystemComponent());
 	}
+}
+
+void AAuraPlayerController::CheckAutorunInput(FGameplayTag ReleasedTag) {
+	if (!ReleasedTag.MatchesTagExact(AuraGameplayTags::Get().Input_LMB)) {
+		return;
+	}
+
+	const auto* ControlledPawn = GetPawn();
+	const auto IsShortClick = FollowTime < ShortPressThreshold || FMath::IsNearlyEqual(FollowTime, ShortPressThreshold);
+	FollowTime = 0.f;
+	if (bTargeting || bShifting || !IsShortClick || !ControlledPawn) {
+		return;
+	}
+
+	auto* Path = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination);
+	if (!Path) {
+		return;
+	}
+
+	Spline->ClearSplinePoints();
+	for (const auto& PathPoint : Path->PathPoints) {
+		Spline->AddSplinePoint(PathPoint, ESplineCoordinateSpace::World, false);
+	}
+	if (!Path->PathPoints.IsEmpty()) {
+		CachedDestination = Path->PathPoints.Last();
+	}
+	Spline->UpdateSpline();
+	bAutoRunning = true;
 }
 
 void AAuraPlayerController::ProcessAutoRun() {

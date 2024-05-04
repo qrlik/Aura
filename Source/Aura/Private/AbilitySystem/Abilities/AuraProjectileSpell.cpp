@@ -5,7 +5,7 @@
 #include "Actor/AuraProjectile.h"
 #include "Interaction/CombatInterface.h"
 
-void UAuraProjectileSpell::SpawnProjectile() {
+void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation) {
 	if (!ensure(IsActive())) {
 		return;
 	}
@@ -22,8 +22,14 @@ void UAuraProjectileSpell::SpawnProjectile() {
 		return;
 	}
 
+	const auto& SpawnLocation = CombatInterface->GetCombatSocketLocation();
+	auto ProjectileRotation = (TargetLocation - SpawnLocation).ToOrientationQuat();
+	ProjectileRotation.Y = 0.0;
+
 	FTransform SpawnTransform;
-	SpawnTransform.SetLocation(CombatInterface->GetCombatSocketLocation());
+	SpawnTransform.SetLocation(SpawnLocation);
+	SpawnTransform.SetRotation(ProjectileRotation);
+
 	auto* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform, Owner, CastChecked<APawn>(Owner),
 	                                                                   ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 	Projectile->FinishSpawning(SpawnTransform);

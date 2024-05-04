@@ -34,7 +34,7 @@ void UTargetDataUnderMouse::SendMouseCursorData() const {
 	auto* TargetData = new FGameplayAbilityTargetData_SingleTargetHit();
 	TargetDataHandle.Add(TargetData);
 
-	Ability->GetActorInfo().PlayerController->GetHitResultUnderCursor(ECC_Camera, false, TargetData->HitResult);
+	Ability->GetActorInfo().PlayerController->GetHitResultUnderCursor(ECC_Visibility, false, TargetData->HitResult);
 	AbilitySystemComponent->ServerSetReplicatedTargetData(GetAbilitySpecHandle(), GetActivationPredictionKey(), TargetDataHandle, FGameplayTag{},
 	                                                      AbilitySystemComponent->ScopedPredictionKey);
 
