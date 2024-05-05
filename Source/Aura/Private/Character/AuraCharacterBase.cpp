@@ -1,8 +1,10 @@
 // Copyright by Aura
 
 #include "Character/AuraCharacterBase.h"
+
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "MotionWarpingComponent.h"
 
 AAuraCharacterBase::AAuraCharacterBase() {
 	PrimaryActorTick.bCanEverTick = false;
@@ -10,6 +12,8 @@ AAuraCharacterBase::AAuraCharacterBase() {
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(), "WeaponHandSocket");
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarping");
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
@@ -44,6 +48,11 @@ UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const {
 FVector AAuraCharacterBase::GetCombatSocketLocation() const {
 	check(Weapon->DoesSocketExist(WeaponSocketName));
 	return Weapon->GetSocketLocation(WeaponSocketName);
+}
+
+void AAuraCharacterBase::UpdateFacingTarget(const FVector& TargetLocation) {
+	check(TargetWarpingName.IsValid());
+	MotionWarping->AddOrUpdateWarpTargetFromLocation(TargetWarpingName, TargetLocation);
 }
 
 UAuraAttributeSet* AAuraCharacterBase::GetAttributeSet() const {

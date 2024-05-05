@@ -10,6 +10,7 @@
 
 class UGameplayAbility;
 class UGameplayEffect;
+class UMotionWarpingComponent;
 class UAuraAbilitySystemComponent;
 class UAuraAttributeSet;
 
@@ -22,6 +23,7 @@ public:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual FVector GetCombatSocketLocation() const override;
+	virtual void UpdateFacingTarget(const FVector& TargetLocation) override;
 	UAuraAttributeSet* GetAttributeSet() const;
 
 protected:
@@ -41,6 +43,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
+	UPROPERTY(EditAnywhere, Category = "Animations")
+	TObjectPtr<UMotionWarpingComponent> MotionWarping;
+
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AbilitySystemComponent;
 
@@ -55,6 +60,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	FName WeaponSocketName;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	FName TargetWarpingName;
 };
