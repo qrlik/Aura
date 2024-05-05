@@ -23,12 +23,12 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation) {
 	}
 
 	const auto& SpawnLocation = CombatInterface->GetCombatSocketLocation();
-	auto ProjectileRotation = (TargetLocation - SpawnLocation).ToOrientationQuat();
-	ProjectileRotation.Y = 0.0;
+	auto ProjectileRotation = (TargetLocation - SpawnLocation).Rotation();
+	ProjectileRotation.Pitch = 0.0;
 
 	FTransform SpawnTransform;
 	SpawnTransform.SetLocation(SpawnLocation);
-	SpawnTransform.SetRotation(ProjectileRotation);
+	SpawnTransform.SetRotation(ProjectileRotation.Quaternion());
 
 	auto* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform, Owner, CastChecked<APawn>(Owner),
 	                                                                   ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
