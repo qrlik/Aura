@@ -17,6 +17,8 @@ public:
 	virtual int32 GetPlayerLevel() const override;
 
 protected:
+	virtual void BeginPlay() override;
+
 	virtual void InitializeHighlight() override;
 
 	virtual void EnableHighlightImpl(bool State) override;

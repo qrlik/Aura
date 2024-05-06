@@ -19,6 +19,7 @@ AAuraCharacterBase::AAuraCharacterBase() {
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Projectile, ECR_Overlap);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetGenerateOverlapEvents(false);
 }
 
 void AAuraCharacterBase::BeginPlay() {

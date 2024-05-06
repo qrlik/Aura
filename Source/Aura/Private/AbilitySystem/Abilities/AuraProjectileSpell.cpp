@@ -2,6 +2,7 @@
 
 #include "AbilitySystem/Abilities/AuraProjectileSpell.h"
 
+#include "AbilitySystemComponent.h"
 #include "Actor/AuraProjectile.h"
 #include "Interaction/CombatInterface.h"
 
@@ -32,5 +33,9 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation) {
 
 	auto* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform, Owner, CastChecked<APawn>(Owner),
 	                                                                   ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+	const auto* AbilitySystemComponent = GetAbilitySystemComponentFromActorInfo_Checked();
+	Projectile->DamageEffect = AbilitySystemComponent->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), AbilitySystemComponent->MakeEffectContext());
+
 	Projectile->FinishSpawning(SpawnTransform);
 }

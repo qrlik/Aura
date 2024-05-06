@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameplayEffectTypes.h"
 #include "AuraProjectile.generated.h"
 
 class UNiagaraSystem;
@@ -17,6 +18,9 @@ class AURA_API AAuraProjectile : public AActor {
 public:
 	AAuraProjectile();
 	virtual void Destroyed() override;
+
+	UPROPERTY(BlueprintReadWrite, meta = (ExposeOnSpawn = true))
+	FGameplayEffectSpecHandle DamageEffect;
 
 protected:
 	virtual void BeginPlay() override;

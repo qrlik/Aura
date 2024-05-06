@@ -19,4 +19,7 @@ protected:
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	TSubclassOf<AAuraProjectile> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
 };
