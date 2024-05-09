@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AttributeSet.h"
+#include "GameplayEffectTypes.h"
 #include "UObject/NoExportTypes.h"
 #include "AuraWidgetDataController.generated.h"
 
@@ -29,20 +30,22 @@ struct FWidgetDataControllerParams {
 	TObjectPtr<UAuraAttributeSet> AttributeSet;
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
+
 UCLASS(Abstract, BlueprintType, Blueprintable)
 class AURA_API UAuraWidgetDataController : public UObject {
 	GENERATED_BODY()
 
 public:
 	UFUNCTION(BlueprintCallable)
+	virtual void BroadcastInitialValues();
+
+	UFUNCTION(BlueprintCallable)
 	void SetWidgetDataControllerParams(const FWidgetDataControllerParams& Params);
 
 	void Initialize();
 
 	bool IsValid() const;
-
-	UFUNCTION(BlueprintCallable)
-	virtual void BroadcastInitialValues();
 
 protected:
 	template <typename ClassType>

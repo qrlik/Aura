@@ -7,6 +7,9 @@
 #include "Interaction/HighlightInterface.h"
 #include "AuraEnemy.generated.h"
 
+class UEnemyWidgetDataController;
+class UWidgetComponent;
+
 UCLASS()
 class AURA_API AAuraEnemy : public AAuraCharacterBase, public IHighlightInterface {
 	GENERATED_BODY()
@@ -24,6 +27,15 @@ protected:
 	virtual void EnableHighlightImpl(bool State) override;
 
 private:
+	void CreateWidgetDataController();
+
+	void InitializeWidget() const;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UWidgetComponent> WidgetComponent;
+	UPROPERTY()
+	TObjectPtr<UEnemyWidgetDataController> WidgetDataController;
+
 	UPROPERTY(EditAnywhere, Category = "Character Class Defaults")
 	int32 Level = 1;
 };

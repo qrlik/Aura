@@ -30,8 +30,6 @@ struct FMessageWidgetByTagRow : public FTableRowBase {
 	TObjectPtr<UTexture2D> Image;
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEffectTagAppliedToSelfSignature, const FMessageWidgetByTagRow&, Row);
 
 UCLASS()
