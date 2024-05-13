@@ -3,6 +3,7 @@
 #include "Character/AuraEnemy.h"
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "Aura/Aura.h"
 #include "Components/WidgetComponent.h"
@@ -33,6 +34,10 @@ void AAuraEnemy::BeginPlay() {
 
 	InitializeDefaultAttributes();
 	InitializeWidget();
+}
+
+void AAuraEnemy::InitializeDefaultAttributes() const {
+	UAuraAbilitySystemLibrary::InitializeDefaultAttributes(AbilitySystemComponent, CharacterClass, Level);
 }
 
 void AAuraEnemy::InitializeHighlight() {

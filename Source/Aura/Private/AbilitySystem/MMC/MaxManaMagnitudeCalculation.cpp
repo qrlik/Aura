@@ -21,7 +21,7 @@ float UMaxManaMagnitudeCalculation::CalculateBaseMagnitude_Implementation(const 
 	GetCapturedAttributeMagnitude(IntelligenceDefinition, Spec, EvaluateParameters, Intelligence);
 	ensure(Intelligence > 0.f || FMath::IsNearlyEqual(Intelligence, 0.f));
 
-	const TScriptInterface<ICombatInterface> CombatInterface = Spec.GetContext().GetSourceObject();
+	const TScriptInterface<ICombatInterface> CombatInterface = Spec.GetContext().GetEffectCauser();
 	check(CombatInterface);
 	const auto PlayerLevel = (CombatInterface) ? CombatInterface->GetPlayerLevel() : 0;
 

@@ -2,6 +2,9 @@
 
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AI/NavigationSystemBase.h"
+#include "Game/AuraGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerController.h"
 #include "UI/HUD/AuraHUD.h"
@@ -24,4 +27,23 @@ UAttributeWidgetDataController* UAuraAbilitySystemLibrary::GetAttributeMenuWidge
 		}
 	}
 	return nullptr;
+}
+
+void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(UAbilitySystemComponent* AbilitySystemComponent, ECharacterClass CharacterClass, float Level) {
+	const auto* World = AbilitySystemComponent->GetWorld();
+	if (!World) {
+		return;
+	}
+	const auto* GameMode = World->GetAuthGameMode<AAuraGameModeBase>();
+	if (!GameMode) {
+		return;
+	}
+	const auto CharacterClassInfo = GameMode->CharacterClassInfo;
+	const auto& ClassDefaultInfo = CharacterClassInfo->GetClassInfo(CharacterClass);
+	AbilitySystemComponent->ApplyGameplayEffectToSelf(ClassDefaultInfo.PrimaryAttributes.GetDefaultObject(), Level,
+	                                                  AbilitySystemComponent->MakeEffectContext());
+	AbilitySystemComponent->ApplyGameplayEffectToSelf(CharacterClassInfo->GetSecondaryAttributesClass().GetDefaultObject(), Level,
+	                                                  AbilitySystemComponent->MakeEffectContext());
+	AbilitySystemComponent->ApplyGameplayEffectToSelf(CharacterClassInfo->GetVitalAttributesClass().GetDefaultObject(), Level,
+	                                                  AbilitySystemComponent->MakeEffectContext());
 }

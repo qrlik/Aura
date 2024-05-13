@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Character/AuraCharacterBase.h"
 #include "Interaction/HighlightInterface.h"
 #include "AuraEnemy.generated.h"
 
+enum class ECharacterClass : uint8;
 class UEnemyWidgetDataController;
 class UWidgetComponent;
 
@@ -22,6 +24,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void InitializeDefaultAttributes() const override;
 	virtual void InitializeHighlight() override;
 
 	virtual void EnableHighlightImpl(bool State) override;
@@ -38,4 +41,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Character Class Defaults")
 	int32 Level = 1;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 };

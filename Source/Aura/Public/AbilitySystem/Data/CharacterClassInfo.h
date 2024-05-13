@@ -29,6 +29,8 @@ class AURA_API UCharacterClassInfo : public UDataAsset {
 
 public:
 	const FCharacterClassDefaultInfo& GetClassInfo(ECharacterClass Class);
+	TSubclassOf<UGameplayEffect> GetSecondaryAttributesClass() const;
+	TSubclassOf<UGameplayEffect> GetVitalAttributesClass() const;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")

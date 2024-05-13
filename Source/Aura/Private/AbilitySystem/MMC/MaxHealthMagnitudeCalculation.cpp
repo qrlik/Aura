@@ -22,7 +22,7 @@ float UMaxHealthMagnitudeCalculation::CalculateBaseMagnitude_Implementation(cons
 	//Vigor = FMath::Max<float>(Vigor, 0.f);
 	ensure(Vigor > 0.f || FMath::IsNearlyEqual(Vigor, 0.f));
 
-	const TScriptInterface<ICombatInterface> CombatInterface = Spec.GetContext().GetSourceObject();
+	const TScriptInterface<ICombatInterface> CombatInterface = Spec.GetContext().GetEffectCauser();
 	check(CombatInterface);
 	const auto PlayerLevel = (CombatInterface) ? CombatInterface->GetPlayerLevel() : 0;
 
