@@ -40,6 +40,17 @@ void UAuraAttributeSet::PreAttributeBaseChange(const FGameplayAttribute& Attribu
 	}
 }
 
+void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) {
+	Super::PostGameplayEffectExecute(Data);
+
+	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute()) {
+		if (const auto Damage = GetIncomingDamage(); Damage > 0.f) {
+			SetIncomingDamage(0.f);
+			SetHealth(FMath::Clamp(GetHealth() - Damage, 0.f, GetMaxHealth()));
+		}
+	}
+}
+
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Health, OldHealth);
 }
