@@ -2,11 +2,15 @@
 
 #include "AbilitySystem/Abilities/AuraProjectileSpell.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "AuraGameplayTags.h"
 #include "Actor/AuraProjectile.h"
 #include "Interaction/CombatInterface.h"
 
 void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation) {
+	check(ProjectileClass);
+	check(DamageEffectClass);
 	if (!ensure(IsActive())) {
 		return;
 	}
@@ -35,7 +39,9 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation) {
 	                                                                   ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	const auto* AbilitySystemComponent = GetAbilitySystemComponentFromActorInfo_Checked();
-	Projectile->DamageEffect = AbilitySystemComponent->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), AbilitySystemComponent->MakeEffectContext());
+	const auto Effect = AbilitySystemComponent->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), AbilitySystemComponent->MakeEffectContext());
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(Effect, AuraGameplayTags::Get().Damage, 50.f);
+	Projectile->DamageEffect = Effect;
 
 	Projectile->FinishSpawning(SpawnTransform);
 }
