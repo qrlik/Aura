@@ -40,7 +40,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation) {
 
 	const auto* AbilitySystemComponent = GetAbilitySystemComponentFromActorInfo_Checked();
 	const auto Effect = AbilitySystemComponent->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), AbilitySystemComponent->MakeEffectContext());
-	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(Effect, AuraGameplayTags::Get().Damage, 50.f);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(Effect, AuraGameplayTags::Get().Damage, Damage.GetValueAtLevel(GetAbilityLevel()));
 	Projectile->DamageEffect = Effect;
 
 	Projectile->FinishSpawning(SpawnTransform);
