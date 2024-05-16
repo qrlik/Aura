@@ -8,6 +8,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+struct FGameplayTag;
 class UGameplayAbility;
 class UGameplayEffect;
 class UMotionWarpingComponent;
@@ -22,14 +23,21 @@ public:
 	AAuraCharacterBase();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual UAnimMontage* GetHitReactMontage() override;
 	virtual FVector GetCombatSocketLocation() const override;
+
 	virtual void UpdateFacingTarget(const FVector& TargetLocation) override;
+
 	UAuraAttributeSet* GetAttributeSet() const;
 
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void InitializeDefaultAttributes() const;
+	virtual void OnHitReactChanged(const FGameplayTag ChangedTag, int32 NewCount);
+
+	void OnAbilitySystemComponentReady();
+	void SetAllowMoveOnHitReact(bool State);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
@@ -43,7 +51,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
-	UPROPERTY(EditAnywhere, Category = "Animations")
+	UPROPERTY(EditAnywhere, Category = "Animation")
 	TObjectPtr<UMotionWarpingComponent> MotionWarping;
 
 	UPROPERTY()
@@ -52,17 +60,24 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAuraAttributeSet> AttributeSet;
 
-	void AddCharacterAbilities() const;
-
 private:
+	void AddCharacterAbilities() const;
+	void BindAbilitySystemComponentCallbacks();
+
 	void InitializeAttributesEffect(TSubclassOf<UGameplayEffect> Effect) const;
 
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Animation")
+	TObjectPtr<UAnimMontage> HitReactMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	FName WeaponSocketName;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	FName TargetWarpingName;
+
+	float CachedWalkSpeed = 0.f;
+	bool AllowMoveOnHitReact = true;
 };

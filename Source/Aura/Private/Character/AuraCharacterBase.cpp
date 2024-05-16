@@ -2,10 +2,12 @@
 
 #include "Character/AuraCharacterBase.h"
 
+#include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "MotionWarpingComponent.h"
 #include "Aura/Aura.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AAuraCharacterBase::AAuraCharacterBase() {
 	PrimaryActorTick.bCanEverTick = false;
@@ -24,6 +26,8 @@ AAuraCharacterBase::AAuraCharacterBase() {
 
 void AAuraCharacterBase::BeginPlay() {
 	Super::BeginPlay();
+
+	ensure(HitReactMontage);
 }
 
 void AAuraCharacterBase::InitializeDefaultAttributes() const {
@@ -32,8 +36,30 @@ void AAuraCharacterBase::InitializeDefaultAttributes() const {
 	InitializeAttributesEffect(DefaultVitalAttributes);
 }
 
+void AAuraCharacterBase::OnHitReactChanged(const FGameplayTag ChangedTag, int32 NewCount) {
+	if (!AllowMoveOnHitReact) {
+		CachedWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
+		GetCharacterMovement()->MaxWalkSpeed = (NewCount > 0) ? 0.f : CachedWalkSpeed;
+	}
+}
+
+void AAuraCharacterBase::OnAbilitySystemComponentReady() {
+	check(AbilitySystemComponent);
+	InitializeDefaultAttributes();
+	AddCharacterAbilities();
+	BindAbilitySystemComponentCallbacks();
+}
+
+void AAuraCharacterBase::SetAllowMoveOnHitReact(bool State) {
+	AllowMoveOnHitReact = State;
+}
+
 void AAuraCharacterBase::AddCharacterAbilities() const {
 	AbilitySystemComponent->AddAbilities(StartupAbilities);
+}
+
+void AAuraCharacterBase::BindAbilitySystemComponentCallbacks() {
+	AbilitySystemComponent->RegisterGameplayTagEvent(AuraGameplayTags::Get().Effects_HitReact).AddUObject(this, &AAuraCharacterBase::OnHitReactChanged);
 }
 
 void AAuraCharacterBase::InitializeAttributesEffect(TSubclassOf<UGameplayEffect> Effect) const {
@@ -46,6 +72,10 @@ void AAuraCharacterBase::InitializeAttributesEffect(TSubclassOf<UGameplayEffect>
 
 UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const {
 	return AbilitySystemComponent;
+}
+
+UAnimMontage* AAuraCharacterBase::GetHitReactMontage() {
+	return HitReactMontage;
 }
 
 FVector AAuraCharacterBase::GetCombatSocketLocation() const {

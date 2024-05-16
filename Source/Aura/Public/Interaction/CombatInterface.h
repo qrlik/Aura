@@ -20,4 +20,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void UpdateFacingTarget(const FVector& TargetLocation) = 0;
+
+	UFUNCTION(BlueprintCallable)
+	virtual UAnimMontage* GetHitReactMontage() = 0;
 };

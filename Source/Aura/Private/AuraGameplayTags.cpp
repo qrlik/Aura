@@ -44,9 +44,12 @@ void AuraGameplayTags::InitializeNativeTags() {
 	GameplayTags.Attributes_Secondary_MaxMana = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.MaxMana"), FString("Maximum amount of Mana obtainable"));
 
-	/* Meta Attributes */
+	/* Meta */
 	GameplayTags.Damage =
 		UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage"), FString("Damage"));
+
+	/* Effects */
+	GameplayTags.Effects_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Effects.HitReact"), FString("Tag granted when hit reacted"));
 
 	/* Input */
 	GameplayTags.Input_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(

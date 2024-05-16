@@ -30,8 +30,7 @@ void AAuraCharacter::PossessedBy(AController* NewController) {
 	Super::PossessedBy(NewController);
 
 	if (UpdateAbilitySystemComponent()) {
-		InitializeDefaultAttributes();
-		AddCharacterAbilities();
+		OnAbilitySystemComponentReady();
 		UpdateHUD();
 	}
 }
@@ -58,9 +57,6 @@ bool AAuraCharacter::UpdateAbilitySystemComponent() {
 }
 
 void AAuraCharacter::UpdateHUD() const {
-	if (!GetPlayerState<AAuraPlayerState>()) {
-		return;
-	}
 	if (const auto* PlayerController = GetController<AAuraPlayerController>()) {
 		if (const auto* HUD = PlayerController->GetHUD<AAuraHUD>()) {
 			HUD->UpdateWidgetsDataControllers();

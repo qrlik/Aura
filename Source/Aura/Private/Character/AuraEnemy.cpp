@@ -21,6 +21,8 @@ AAuraEnemy::AAuraEnemy() {
 	WidgetComponent->SetupAttachment(GetRootComponent());
 	WidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
 	WidgetComponent->SetDrawAtDesiredSize(true);
+
+	SetAllowMoveOnHitReact(false);
 }
 
 int32 AAuraEnemy::GetPlayerLevel() const {
@@ -32,7 +34,7 @@ void AAuraEnemy::BeginPlay() {
 
 	CreateWidgetDataController();
 
-	InitializeDefaultAttributes();
+	OnAbilitySystemComponentReady();
 	InitializeWidget();
 }
 
