@@ -11,6 +11,19 @@
 #include "UI/WidgetDataController/AuraWidgetDataController.h"
 #include "UI/WidgetDataController/OverlayWidgetDataController.h"
 
+namespace {
+	UCharacterClassInfo* GetClassInfo(const UWorld* World) {
+		if (!World) {
+			return nullptr;
+		}
+		const auto* GameMode = World->GetAuthGameMode<AAuraGameModeBase>();
+		if (!GameMode) {
+			return nullptr;
+		}
+		return GameMode->CharacterClassInfo;
+	}
+}
+
 UOverlayWidgetDataController* UAuraAbilitySystemLibrary::GetOverlayWidgetDataController(const UObject* WorldContexObject) {
 	if (const auto* PC = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(WorldContexObject, 0))) {
 		if (const auto* HUD = PC->GetHUD<AAuraHUD>()) {
@@ -30,15 +43,11 @@ UAttributeWidgetDataController* UAuraAbilitySystemLibrary::GetAttributeMenuWidge
 }
 
 void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(UAbilitySystemComponent* AbilitySystemComponent, ECharacterClass CharacterClass, float Level) {
-	const auto* World = AbilitySystemComponent->GetWorld();
-	if (!World) {
+	const auto CharacterClassInfo = GetClassInfo(AbilitySystemComponent->GetWorld());
+	if (!CharacterClassInfo) {
 		return;
 	}
-	const auto* GameMode = World->GetAuthGameMode<AAuraGameModeBase>();
-	if (!GameMode) {
-		return;
-	}
-	const auto CharacterClassInfo = GameMode->CharacterClassInfo;
+
 	const auto& ClassDefaultInfo = CharacterClassInfo->GetClassInfo(CharacterClass);
 	AbilitySystemComponent->ApplyGameplayEffectToSelf(ClassDefaultInfo.PrimaryAttributes.GetDefaultObject(), Level,
 	                                                  AbilitySystemComponent->MakeEffectContext());
@@ -46,4 +55,15 @@ void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(UAbilitySystemCompon
 	                                                  AbilitySystemComponent->MakeEffectContext());
 	AbilitySystemComponent->ApplyGameplayEffectToSelf(CharacterClassInfo->GetVitalAttributesClass().GetDefaultObject(), Level,
 	                                                  AbilitySystemComponent->MakeEffectContext());
+}
+
+void UAuraAbilitySystemLibrary::InitializeDefaultAbilities(UAbilitySystemComponent* AbilitySystemComponent, ECharacterClass CharacterClass) {
+	const auto CharacterClassInfo = GetClassInfo(AbilitySystemComponent->GetWorld());
+	if (!CharacterClassInfo) {
+		return;
+	}
+
+	for (const auto& AbilityClass : CharacterClassInfo->GetAbilitiesClasses()) {
+		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec{ AbilityClass, 1 });
+	}
 }

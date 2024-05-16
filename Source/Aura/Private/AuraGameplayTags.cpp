@@ -48,8 +48,11 @@ void AuraGameplayTags::InitializeNativeTags() {
 	GameplayTags.Damage =
 		UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage"), FString("Damage"));
 
+	/* Abilities */
+	GameplayTags.Abilities_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.HitReact"), FString("Tag to start hit react"));
+
 	/* Effects */
-	GameplayTags.Effects_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Effects.HitReact"), FString("Tag granted when hit reacted"));
+	GameplayTags.Effects_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Effects.HitReact"), FString("Tag granted during hit reacted"));
 
 	/* Input */
 	GameplayTags.Input_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(

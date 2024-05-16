@@ -19,9 +19,14 @@ class AURA_API UAuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetDataController")
 	static UOverlayWidgetDataController* GetOverlayWidgetDataController(const UObject* WorldContextObject);
+
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetDataController")
 	static UAttributeWidgetDataController* GetAttributeMenuWidgetDataController(const UObject* WorldContextObject);
+
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults")
 	static void InitializeDefaultAttributes(UAbilitySystemComponent* AbilitySystemComponent, ECharacterClass CharacterClass,
 	                                        float Level);
+
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults")
+	static void InitializeDefaultAbilities(UAbilitySystemComponent* AbilitySystemComponent, ECharacterClass CharacterClass);
 };

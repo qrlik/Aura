@@ -38,6 +38,10 @@ void AAuraEnemy::BeginPlay() {
 	InitializeWidget();
 }
 
+void AAuraEnemy::AddCharacterAbilities() const {
+	UAuraAbilitySystemLibrary::InitializeDefaultAbilities(AbilitySystemComponent, CharacterClass);
+}
+
 void AAuraEnemy::InitializeDefaultAttributes() const {
 	UAuraAbilitySystemLibrary::InitializeDefaultAttributes(AbilitySystemComponent, CharacterClass, Level);
 }

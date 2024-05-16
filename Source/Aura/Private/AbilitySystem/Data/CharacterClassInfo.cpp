@@ -6,6 +6,10 @@ const FCharacterClassDefaultInfo& UCharacterClassInfo::GetClassInfo(ECharacterCl
 	return ClassesInfo.FindChecked(Class);
 }
 
+TArray<TSubclassOf<UGameplayAbility>> UCharacterClassInfo::GetAbilitiesClasses() const {
+	return Abilities;
+}
+
 TSubclassOf<UGameplayEffect> UCharacterClassInfo::GetSecondaryAttributesClass() const {
 	return SecondaryAttributes;
 }

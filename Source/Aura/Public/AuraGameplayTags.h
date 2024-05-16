@@ -31,6 +31,9 @@ public:
 	/* Meta */
 	FGameplayTag Damage;
 
+	/* Abilities */
+	FGameplayTag Abilities_HitReact;
+
 	/* Effects */
 	FGameplayTag Effects_HitReact;
 

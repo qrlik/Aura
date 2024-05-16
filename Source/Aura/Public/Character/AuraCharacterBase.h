@@ -33,6 +33,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void AddCharacterAbilities() const;
 	virtual void InitializeDefaultAttributes() const;
 	virtual void OnHitReactChanged(const FGameplayTag ChangedTag, int32 NewCount);
 
@@ -61,7 +62,6 @@ protected:
 	TObjectPtr<UAuraAttributeSet> AttributeSet;
 
 private:
-	void AddCharacterAbilities() const;
 	void BindAbilitySystemComponentCallbacks();
 
 	void InitializeAttributesEffect(TSubclassOf<UGameplayEffect> Effect) const;
