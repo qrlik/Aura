@@ -25,6 +25,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void AddCharacterAbilities() const override;
+	virtual void Die() override;
 	virtual void InitializeDefaultAttributes() const override;
 	virtual void InitializeHighlight() override;
 
@@ -39,6 +40,9 @@ private:
 	TObjectPtr<UWidgetComponent> WidgetComponent;
 	UPROPERTY()
 	TObjectPtr<UEnemyWidgetDataController> WidgetDataController;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float DeathLifeSpan = 5.f;
 
 	UPROPERTY(EditAnywhere, Category = "Character Class Defaults")
 	int32 Level = 1;

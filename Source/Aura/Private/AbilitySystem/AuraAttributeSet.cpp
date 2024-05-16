@@ -4,6 +4,7 @@
 
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
+#include "Interaction/CombatInterface.h"
 #include "Net/UnrealNetwork.h"
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
@@ -48,7 +49,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		if (const auto Damage = GetIncomingDamage(); Damage > 0.f) {
 			SetIncomingDamage(0.f);
 			const auto NewHealth = FMath::Clamp(GetHealth() - Damage, 0.f, GetMaxHealth());
-			const auto IsFatal = NewHealth < 0.f;
+			const auto IsFatal = FMath::IsNearlyZero(NewHealth);
 			SetHealth(NewHealth);
 			if (!IsFatal) {
 				FGameplayTagContainer Tags;
@@ -56,6 +57,9 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				Data.Target.TryActivateAbilitiesByTag(Tags);
 				//const auto Payload = FGameplayEventData{};
 				//Data.Target.HandleGameplayEvent(AuraGameplayTags::Get().Abilities_HitReact, &Payload);
+			}
+			else if (const TScriptInterface<ICombatInterface> CombatInterface{ Data.Target.GetAvatarActor() }) {
+				CombatInterface->Die();
 			}
 		}
 	}

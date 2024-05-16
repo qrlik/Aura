@@ -26,7 +26,11 @@ public:
 	virtual UAnimMontage* GetHitReactMontage() override;
 	virtual FVector GetCombatSocketLocation() const override;
 
+	virtual void Die() override;
 	virtual void UpdateFacingTarget(const FVector& TargetLocation) override;
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MultiCastHandleDeath();
 
 	UAuraAttributeSet* GetAttributeSet() const;
 

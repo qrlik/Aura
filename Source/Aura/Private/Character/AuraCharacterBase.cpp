@@ -83,9 +83,27 @@ FVector AAuraCharacterBase::GetCombatSocketLocation() const {
 	return Weapon->GetSocketLocation(WeaponSocketName);
 }
 
+void AAuraCharacterBase::Die() {
+	Weapon->DetachFromComponent(FDetachmentTransformRules{ EDetachmentRule::KeepWorld, true });
+	MultiCastHandleDeath();
+}
+
 void AAuraCharacterBase::UpdateFacingTarget(const FVector& TargetLocation) {
 	check(TargetWarpingName.IsValid());
 	MotionWarping->AddOrUpdateWarpTargetFromLocation(TargetWarpingName, TargetLocation);
+}
+
+void AAuraCharacterBase::MultiCastHandleDeath_Implementation() {
+	Weapon->SetSimulatePhysics(true);
+	Weapon->SetEnableGravity(true);
+	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetEnableGravity(true);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 UAuraAttributeSet* AAuraCharacterBase::GetAttributeSet() const {
