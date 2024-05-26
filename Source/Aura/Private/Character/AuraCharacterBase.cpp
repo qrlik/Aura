@@ -62,6 +62,23 @@ void AAuraCharacterBase::BindAbilitySystemComponentCallbacks() {
 	AbilitySystemComponent->RegisterGameplayTagEvent(AuraGameplayTags::Get().Effects_HitReact).AddUObject(this, &AAuraCharacterBase::OnHitReactChanged);
 }
 
+void AAuraCharacterBase::Dissolve() {
+	TArray<UMaterialInstanceDynamic*> MaterialsForDissolve;
+	if (IsValid(DissolveMaterial)) {
+		auto* MaterialInstance = UMaterialInstanceDynamic::Create(DissolveMaterial, this);
+		GetMesh()->SetMaterial(0, MaterialInstance);
+		MaterialsForDissolve.Add(MaterialInstance);
+	}
+	if (IsValid(WeaponDissolveMaterial)) {
+		auto* MaterialInstance = UMaterialInstanceDynamic::Create(WeaponDissolveMaterial, this);
+		Weapon->SetMaterial(0, MaterialInstance);
+		MaterialsForDissolve.Add(MaterialInstance);
+	}
+	if (!MaterialsForDissolve.IsEmpty()) {
+		StartDissolveTimeline(MaterialsForDissolve);
+	}
+}
+
 void AAuraCharacterBase::InitializeAttributesEffect(TSubclassOf<UGameplayEffect> Effect) const {
 	check(AbilitySystemComponent);
 	check(Effect);
@@ -104,6 +121,8 @@ void AAuraCharacterBase::MultiCastHandleDeath_Implementation() {
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	Dissolve();
 }
 
 UAuraAttributeSet* AAuraCharacterBase::GetAttributeSet() const {

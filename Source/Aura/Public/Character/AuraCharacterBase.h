@@ -35,6 +35,9 @@ public:
 	UAuraAttributeSet* GetAttributeSet() const;
 
 protected:
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartDissolveTimeline(const TArray<UMaterialInstanceDynamic*>& MaterialInstance);
+
 	virtual void BeginPlay() override;
 
 	virtual void AddCharacterAbilities() const;
@@ -67,7 +70,7 @@ protected:
 
 private:
 	void BindAbilitySystemComponentCallbacks();
-
+	void Dissolve();
 	void InitializeAttributesEffect(TSubclassOf<UGameplayEffect> Effect) const;
 
 	UPROPERTY(EditAnywhere, Category = "Abilities")
@@ -75,6 +78,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Animation")
 	TObjectPtr<UAnimMontage> HitReactMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Animation")
+	TObjectPtr<UMaterialInstance> DissolveMaterial;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Animation")
+	TObjectPtr<UMaterialInstance> WeaponDissolveMaterial;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	FName WeaponSocketName;
