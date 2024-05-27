@@ -120,4 +120,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
 	FGameplayAttributeData IncomingDamage;
+
+private:
+	void ShowFloatingText(const FGameplayEffectModCallbackData& Data, float Damage);
 };

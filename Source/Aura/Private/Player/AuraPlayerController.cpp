@@ -8,12 +8,13 @@
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "GameFramework/Character.h"
 #include "Components/InputComponent.h"
 #include "Components/SplineComponent.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/HighlightInterface.h"
-#include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerState.h"
+#include "UI/Widget/DamageTextComponent.h"
 
 AAuraPlayerController::AAuraPlayerController() {
 	bReplicates = true;
@@ -30,6 +31,16 @@ void AAuraPlayerController::PlayerTick(float DeltaTime) {
 void AAuraPlayerController::OnRep_PlayerState() {
 	Super::OnRep_PlayerState();
 	SetupAbilitySystemComponent();
+}
+
+void AAuraPlayerController::ShowDamageNumber_Implementation(AActor* Target, float Damage) {
+	if (IsValid(Target) && DamageTextComponentClass) {
+		auto* DamageText = NewObject<UDamageTextComponent>(Target, DamageTextComponentClass);
+		DamageText->RegisterComponent();
+		DamageText->AttachToComponent(Target->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+		DamageText->SetDamageText(Damage);
+	}
 }
 
 void AAuraPlayerController::BeginPlay() {

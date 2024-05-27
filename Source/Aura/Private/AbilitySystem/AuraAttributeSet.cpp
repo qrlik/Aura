@@ -5,7 +5,9 @@
 #include "AuraGameplayTags.h"
 #include "GameplayEffectExtension.h"
 #include "Interaction/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Player/AuraPlayerController.h"
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -61,6 +63,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			else if (const TScriptInterface<ICombatInterface> CombatInterface{ Data.Target.GetAvatarActor() }) {
 				CombatInterface->Die();
 			}
+			ShowFloatingText(Data, Damage);
 		}
 	}
 }
@@ -127,4 +130,13 @@ void UAuraAttributeSet::OnRep_CriticalHitDamage(const FGameplayAttributeData& Ol
 
 void UAuraAttributeSet::OnRep_CriticalHitResistance(const FGameplayAttributeData& OldCriticalHitResistance) const {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, CriticalHitResistance, OldCriticalHitResistance);
+}
+
+void UAuraAttributeSet::ShowFloatingText(const FGameplayEffectModCallbackData& Data, float Damage) {
+	auto* EffectCauser = Data.EffectSpec.GetEffectContext().GetEffectCauser();
+	if (EffectCauser != Data.Target.GetAvatarActor()) {
+		if (auto* PC = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(EffectCauser, 0))) {
+			PC->ShowDamageNumber(Data.Target.GetAvatarActor(), Damage);
+		}
+	}
 }
