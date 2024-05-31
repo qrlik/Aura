@@ -4,6 +4,7 @@
 #include "AbilitySystem/ExecCalc/ExecCalc_Damage.h"
 
 #include "AbilitySystemComponent.h"
+#include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 
 namespace {
@@ -44,10 +45,21 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluateParameters.SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
 	EvaluateParameters.TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
 
-	float Armor = 0.f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorDef, EvaluateParameters, Armor);
-	++Armor;
+	auto Damage = Spec.GetSetByCallerMagnitude(AuraGameplayTags::Get().Damage);
+	ProcessBlock(Damage, TargetAsc->GetNumericAttributeChecked(UAuraAttributeSet::GetBlockChanceAttribute()));
 
-	FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetArmorAttribute(), EGameplayModOp::Additive, Armor);
+	//float Armor = 0.f;
+	//ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorDef, EvaluateParameters, Armor);
+	//++Armor;
+
+	FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
 }
+
+void UExecCalc_Damage::ProcessBlock(float& Damage, float BlockChance) const {
+	const auto Block = FMath::RandRange(0.f, 100.f);
+	if (Block < BlockChance) {
+		Damage *= BlockFactor;
+	}
+}
+
