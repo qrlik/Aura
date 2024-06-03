@@ -11,10 +11,10 @@ namespace {
 	struct AuraDamageStatics {
 		// DECLARE_ATTRIBUTE_CAPTUREDEF(Armor);
 
-		FGameplayEffectAttributeCaptureDefinition ArmorDef;
+		FGameplayEffectAttributeCaptureDefinition ArmorPenetrationDef;
 
 		AuraDamageStatics():
-			ArmorDef(UAuraAttributeSet::GetArmorAttribute(), EGameplayEffectAttributeCaptureSource::Target, false) {
+			ArmorPenetrationDef(UAuraAttributeSet::GetArmorPenetrationAttribute(), EGameplayEffectAttributeCaptureSource::Source, true) {
 			// need to make UAuraAttributeSet::Armor public
 			// also no need to capture not snapshot attribute, because we can get them directly from ASC
 			// DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet, Armor, EGameplayEffectAttributeCaptureSource::Target, false);
@@ -28,7 +28,7 @@ namespace {
 }
 
 UExecCalc_Damage::UExecCalc_Damage() {
-	RelevantAttributesToCapture.Add(DamageStatics().ArmorDef);
+	RelevantAttributesToCapture.Add(DamageStatics().ArmorPenetrationDef);
 }
 
 void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
@@ -41,19 +41,26 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	const auto& Spec = ExecutionParams.GetOwningSpec();
 
-	FAggregatorEvaluateParameters EvaluateParameters;
-	EvaluateParameters.SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
-	EvaluateParameters.TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
-
 	auto Damage = Spec.GetSetByCallerMagnitude(AuraGameplayTags::Get().Damage);
 	ProcessBlock(Damage, TargetAsc->GetNumericAttributeChecked(UAuraAttributeSet::GetBlockChanceAttribute()));
-
-	//float Armor = 0.f;
-	//ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorDef, EvaluateParameters, Armor);
-	//++Armor;
+	const auto Armor = TargetAsc->GetNumericAttributeChecked(UAuraAttributeSet::GetArmorAttribute());
+	const auto EffectiveArmor = GetEffectiveArmor(Armor, Spec, ExecutionParams);
+	ProcessArmor(Damage, EffectiveArmor);
 
 	FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
+}
+
+float UExecCalc_Damage::GetEffectiveArmor(float Armor, const FGameplayEffectSpec& Spec, const FGameplayEffectCustomExecutionParameters& ExecutionParams) const {
+	float ArmorPenetration = 0.f;
+
+	FAggregatorEvaluateParameters EvaluateParameters;
+	EvaluateParameters.SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
+	EvaluateParameters.TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorPenetrationDef, EvaluateParameters, ArmorPenetration);
+
+	Armor -= Armor * ArmorPenetration / 100.f;
+	return FMath::Clamp(Armor, 0.f, Armor);
 }
 
 void UExecCalc_Damage::ProcessBlock(float& Damage, float BlockChance) const {
@@ -63,3 +70,7 @@ void UExecCalc_Damage::ProcessBlock(float& Damage, float BlockChance) const {
 	}
 }
 
+void UExecCalc_Damage::ProcessArmor(float& Damage, float Armor) const {
+	Damage -= Damage * Armor / 100.f;
+	Damage = FMath::Clamp(Damage, 0.f, Damage);
+}
