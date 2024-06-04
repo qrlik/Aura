@@ -14,9 +14,13 @@ namespace {
 		// DECLARE_ATTRIBUTE_CAPTUREDEF(Armor);
 
 		FGameplayEffectAttributeCaptureDefinition ArmorPenetrationDef;
+		FGameplayEffectAttributeCaptureDefinition CriticalHitChanceDef;
+		FGameplayEffectAttributeCaptureDefinition CriticalHitDamageDef;
 
 		AuraDamageStatics():
-			ArmorPenetrationDef(UAuraAttributeSet::GetArmorPenetrationAttribute(), EGameplayEffectAttributeCaptureSource::Source, true) {
+			ArmorPenetrationDef(UAuraAttributeSet::GetArmorPenetrationAttribute(), EGameplayEffectAttributeCaptureSource::Source, true),
+			CriticalHitChanceDef(UAuraAttributeSet::GetCriticalHitChanceAttribute(), EGameplayEffectAttributeCaptureSource::Source, true),
+			CriticalHitDamageDef(UAuraAttributeSet::GetCriticalHitDamageAttribute(), EGameplayEffectAttributeCaptureSource::Source, true) {
 			// need to make UAuraAttributeSet::Armor public
 			// also no need to capture not snapshot attribute, because we can get them directly from ASC
 			// DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet, Armor, EGameplayEffectAttributeCaptureSource::Target, false);
@@ -27,50 +31,60 @@ namespace {
 		static AuraDamageStatics DStatics;
 		return DStatics;
 	}
+
+	float GetCapturedAttribute(const FGameplayEffectAttributeCaptureDefinition& AttributeDef, const FGameplayEffectCustomExecutionParameters& ExecutionParams,
+	                           const FAggregatorEvaluateParameters& EvalParams) {
+		float CapturedAttribute = 0.f;
+		ensure(ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(AttributeDef, EvalParams, CapturedAttribute));
+		return CapturedAttribute;
+	}
 }
 
 UExecCalc_Damage::UExecCalc_Damage() {
 	RelevantAttributesToCapture.Add(DamageStatics().ArmorPenetrationDef);
+	RelevantAttributesToCapture.Add(DamageStatics().CriticalHitChanceDef);
+	RelevantAttributesToCapture.Add(DamageStatics().CriticalHitDamageDef);
 }
 
 void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
                                               FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const {
 	auto* SourceAsc = ExecutionParams.GetSourceAbilitySystemComponent();
 	auto* TargetAsc = ExecutionParams.GetTargetAbilitySystemComponent();
-
-	auto Source = TScriptInterface<ICombatInterface>(SourceAsc->GetAvatarActor());
-	auto Target = TScriptInterface<ICombatInterface>(TargetAsc->GetAvatarActor());
+	const auto Source = TScriptInterface<ICombatInterface>(SourceAsc->GetAvatarActor());
+	const auto Target = TScriptInterface<ICombatInterface>(TargetAsc->GetAvatarActor());
 	const auto SourceLevel = (Source) ? Source->GetPlayerLevel() : 1;
 	const auto TargetLevel = (Target) ? Target->GetPlayerLevel() : 1;
 
 	const auto& Spec = ExecutionParams.GetOwningSpec();
+	FAggregatorEvaluateParameters EvaluateParameters;
+	EvaluateParameters.SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
+	EvaluateParameters.TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
 
 	auto Damage = Spec.GetSetByCallerMagnitude(AuraGameplayTags::Get().Damage);
 	ProcessBlock(Damage, TargetAsc->GetNumericAttributeChecked(UAuraAttributeSet::GetBlockChanceAttribute()));
+
 	const auto Armor = TargetAsc->GetNumericAttributeChecked(UAuraAttributeSet::GetArmorAttribute());
-	const auto EffectiveArmor = GetEffectiveArmor(Armor, SourceLevel, Spec, ExecutionParams);
+	const auto EffectiveArmor = GetEffectiveArmor(Armor, SourceLevel, EvaluateParameters, ExecutionParams);
 	ProcessArmor(Damage, EffectiveArmor, TargetLevel);
+
+	auto CriticalResistance = TargetAsc->GetNumericAttributeChecked(UAuraAttributeSet::GetCriticalHitResistanceAttribute());
+	CriticalResistance *= CriticalChanceResistanceCoefficient.GetValueAtLevel(TargetLevel);
+	ProcessCritical(Damage, CriticalResistance, EvaluateParameters, ExecutionParams);
 
 	FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
 }
 
-float UExecCalc_Damage::GetEffectiveArmor(float Armor, float Level, const FGameplayEffectSpec& Spec,
+float UExecCalc_Damage::GetEffectiveArmor(float Armor, float Level, const FAggregatorEvaluateParameters& EvalParams,
                                           const FGameplayEffectCustomExecutionParameters& ExecutionParams) const {
-	float ArmorPenetration = 0.f;
-
-	FAggregatorEvaluateParameters EvaluateParameters;
-	EvaluateParameters.SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
-	EvaluateParameters.TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorPenetrationDef, EvaluateParameters, ArmorPenetration);
-
+	const float ArmorPenetration = GetCapturedAttribute(DamageStatics().ArmorPenetrationDef, ExecutionParams, EvalParams);
 	Armor -= Armor * ArmorPenetration * ArmorPenetrationCoefficient.GetValueAtLevel(Level) / 100.f;
 	return FMath::Clamp(Armor, 0.f, Armor);
 }
 
 void UExecCalc_Damage::ProcessBlock(float& Damage, float BlockChance) const {
-	const auto Block = FMath::RandRange(0.f, 100.f);
-	if (Block < BlockChance) {
+	const auto BlockRoll = FMath::RandRange(0.f, 100.f);
+	if (BlockRoll < BlockChance) {
 		Damage *= BlockFactor;
 	}
 }
@@ -78,4 +92,15 @@ void UExecCalc_Damage::ProcessBlock(float& Damage, float BlockChance) const {
 void UExecCalc_Damage::ProcessArmor(float& Damage, float Armor, float Level) const {
 	Damage -= Damage * Armor * EffectiveArmorCoefficient.GetValueAtLevel(Level) / 100.f;
 	Damage = FMath::Clamp(Damage, 0.f, Damage);
+}
+
+void UExecCalc_Damage::ProcessCritical(float& Damage, float CriticalResistance, const FAggregatorEvaluateParameters& EvalParams,
+                                       const FGameplayEffectCustomExecutionParameters& ExecutionParams) const {
+	auto CriticalChance = GetCapturedAttribute(DamageStatics().CriticalHitChanceDef, ExecutionParams, EvalParams);
+	CriticalChance -= CriticalResistance;
+	const auto CriticalRoll = FMath::RandRange(0.f, 100.f);
+	if (CriticalRoll < CriticalChance) {
+		const auto CriticalDamage = GetCapturedAttribute(DamageStatics().CriticalHitChanceDef, ExecutionParams, EvalParams);
+		Damage = (Damage * 2.f) + CriticalDamage;
+	}
 }

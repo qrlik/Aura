@@ -17,15 +17,20 @@ public:
 	                                    FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const override;
 
 private:
-	float GetEffectiveArmor(float Armor, float Level, const FGameplayEffectSpec& Spec, const FGameplayEffectCustomExecutionParameters& ExecutionParams) const;
+	float GetEffectiveArmor(float Armor, float Level, const FAggregatorEvaluateParameters& EvalParams,
+	                        const FGameplayEffectCustomExecutionParameters& ExecutionParams) const;
+
 	void ProcessBlock(float& Damage, float BlockChance) const;
 	void ProcessArmor(float& Damage, float Armor, float Level) const;
+	void ProcessCritical(float& Damage, float CriticalResistance, const FAggregatorEvaluateParameters& EvalParams,
+	                     const FGameplayEffectCustomExecutionParameters& ExecutionParams) const;
 
 	UPROPERTY(EditDefaultsOnly)
 	FScalableFloat ArmorPenetrationCoefficient;
-
 	UPROPERTY(EditDefaultsOnly)
 	FScalableFloat EffectiveArmorCoefficient;
+	UPROPERTY(EditDefaultsOnly)
+	FScalableFloat CriticalChanceResistanceCoefficient;
 
 	UPROPERTY(EditDefaultsOnly)
 	float BlockFactor = 0.5f;
