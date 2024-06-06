@@ -7,7 +7,21 @@ UScriptStruct* FAuraAbilitySystemTypes::GetScriptStruct() const {
 }
 
 bool FAuraAbilitySystemTypes::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess) {
-	return FGameplayEffectContext::NetSerialize(Ar, Map, bOutSuccess);
+	const auto Result = Super::NetSerialize(Ar, Map, bOutSuccess);
+
+	uint8 RepBits = 0;
+	if (Ar.IsSaving()) {
+		RepBits |= (bIsBlockedHit << 0);
+		RepBits |= (bIsCriticalHit << 1);
+	}
+	Ar.SerializeBits(&RepBits, 2);
+
+	if (Ar.IsLoading()) {
+		bIsBlockedHit = RepBits & (1 << 0);
+		bIsCriticalHit = RepBits & (1 << 1);
+	}
+
+	return Result;
 }
 
 bool FAuraAbilitySystemTypes::IsCriticalHit() const {
