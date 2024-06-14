@@ -7,10 +7,11 @@
 #include "AuraAbilitySystemTypes.generated.h"
 
 USTRUCT()
-struct AURA_API FAuraAbilitySystemTypes : public FGameplayEffectContext {
+struct AURA_API FAuraGameplayEffectContext : public FGameplayEffectContext {
 	GENERATED_BODY()
 
 public:
+	virtual FGameplayEffectContext* Duplicate() const override;
 	virtual UScriptStruct* GetScriptStruct() const override;
 	virtual bool NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess) override;
 
@@ -25,4 +26,12 @@ private:
 
 	UPROPERTY()
 	uint8 bIsCriticalHit : 1 = false;
+};
+
+template <>
+struct TStructOpsTypeTraits<FAuraGameplayEffectContext> : TStructOpsTypeTraitsBase2<FGameplayEffectContext> {
+	enum {
+		WithNetSerializer = true,
+		WithCopy = true
+	};
 };

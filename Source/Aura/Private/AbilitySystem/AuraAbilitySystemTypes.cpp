@@ -2,11 +2,20 @@
 
 #include "AbilitySystem/AuraAbilitySystemTypes.h"
 
-UScriptStruct* FAuraAbilitySystemTypes::GetScriptStruct() const {
-	return FAuraAbilitySystemTypes::StaticStruct();
+FGameplayEffectContext* FAuraGameplayEffectContext::Duplicate() const {
+	auto* NewContext = new FAuraGameplayEffectContext();
+	*NewContext = *this;
+	if (GetHitResult()) {
+		NewContext->AddHitResult(*GetHitResult(), true);
+	}
+	return NewContext;
 }
 
-bool FAuraAbilitySystemTypes::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess) {
+UScriptStruct* FAuraGameplayEffectContext::GetScriptStruct() const {
+	return StaticStruct();
+}
+
+bool FAuraGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess) {
 	const auto Result = Super::NetSerialize(Ar, Map, bOutSuccess);
 
 	uint8 RepBits = 0;
@@ -24,18 +33,18 @@ bool FAuraAbilitySystemTypes::NetSerialize(FArchive& Ar, UPackageMap* Map, bool&
 	return Result;
 }
 
-bool FAuraAbilitySystemTypes::IsCriticalHit() const {
+bool FAuraGameplayEffectContext::IsCriticalHit() const {
 	return bIsCriticalHit;
 }
 
-bool FAuraAbilitySystemTypes::IsBlockedHit() const {
+bool FAuraGameplayEffectContext::IsBlockedHit() const {
 	return bIsBlockedHit;
 }
 
-void FAuraAbilitySystemTypes::SetIsCriticalHit(bool State) {
+void FAuraGameplayEffectContext::SetIsCriticalHit(bool State) {
 	bIsCriticalHit = State;
 }
 
-void FAuraAbilitySystemTypes::SetIsBlockedHit(bool State) {
+void FAuraGameplayEffectContext::SetIsBlockedHit(bool State) {
 	bIsBlockedHit = State;
 }
