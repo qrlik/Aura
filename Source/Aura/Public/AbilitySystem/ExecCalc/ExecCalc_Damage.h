@@ -20,9 +20,9 @@ private:
 	float GetEffectiveArmor(float Armor, float Level, const FAggregatorEvaluateParameters& EvalParams,
 	                        const FGameplayEffectCustomExecutionParameters& ExecutionParams) const;
 
-	void ProcessBlock(float& Damage, float BlockChance) const;
+	bool ProcessBlock(float& Damage, float BlockChance) const;
 	void ProcessArmor(float& Damage, float Armor, float Level) const;
-	void ProcessCritical(float& Damage, float CriticalResistance, const FAggregatorEvaluateParameters& EvalParams,
+	bool ProcessCritical(float& Damage, float CriticalResistance, const FAggregatorEvaluateParameters& EvalParams,
 	                     const FGameplayEffectCustomExecutionParameters& ExecutionParams) const;
 
 	UPROPERTY(EditDefaultsOnly)

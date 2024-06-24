@@ -2,6 +2,7 @@
 
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 
+#include "AbilitySystem/AuraAbilitySystemTypes.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AI/NavigationSystemBase.h"
 #include "Game/AuraGameModeBase.h"
@@ -40,6 +41,10 @@ UAttributeWidgetDataController* UAuraAbilitySystemLibrary::GetAttributeMenuWidge
 		}
 	}
 	return nullptr;
+}
+
+FAuraGameplayEffectContext* UAuraAbilitySystemLibrary::GetEffectContext(FGameplayEffectContextHandle EffectContext) {
+	return static_cast<FAuraGameplayEffectContext*>(EffectContext.Get());
 }
 
 void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(UAbilitySystemComponent* AbilitySystemComponent, ECharacterClass CharacterClass, float Level) {

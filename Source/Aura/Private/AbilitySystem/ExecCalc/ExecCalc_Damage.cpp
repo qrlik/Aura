@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "AbilitySystem/AuraAbilitySystemTypes.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "Interaction/CombatInterface.h"
 
@@ -61,7 +62,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluateParameters.TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
 
 	auto Damage = Spec.GetSetByCallerMagnitude(AuraGameplayTags::Get().Damage);
-	ProcessBlock(Damage, TargetAsc->GetNumericAttributeChecked(UAuraAttributeSet::GetBlockChanceAttribute()));
+	const auto IsBlocked = ProcessBlock(Damage, TargetAsc->GetNumericAttributeChecked(UAuraAttributeSet::GetBlockChanceAttribute()));
+
+	// TO DO Check when context will be destroyed
+	auto* Context = UAuraAbilitySystemLibrary::GetEffectContext(Spec.GetContext());
+	Context->SetIsBlockedHit(IsBlocked);
 
 	const auto Armor = TargetAsc->GetNumericAttributeChecked(UAuraAttributeSet::GetArmorAttribute());
 	const auto EffectiveArmor = GetEffectiveArmor(Armor, SourceLevel, EvaluateParameters, ExecutionParams);
@@ -69,7 +74,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	auto CriticalResistance = TargetAsc->GetNumericAttributeChecked(UAuraAttributeSet::GetCriticalHitResistanceAttribute());
 	CriticalResistance *= CriticalChanceResistanceCoefficient.GetValueAtLevel(TargetLevel);
-	ProcessCritical(Damage, CriticalResistance, EvaluateParameters, ExecutionParams);
+	const auto IsCritical = ProcessCritical(Damage, CriticalResistance, EvaluateParameters, ExecutionParams);
+	Context->SetIsCriticalHit(IsCritical);
 
 	FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
@@ -82,11 +88,13 @@ float UExecCalc_Damage::GetEffectiveArmor(float Armor, float Level, const FAggre
 	return FMath::Clamp(Armor, 0.f, Armor);
 }
 
-void UExecCalc_Damage::ProcessBlock(float& Damage, float BlockChance) const {
+bool UExecCalc_Damage::ProcessBlock(float& Damage, float BlockChance) const {
 	const auto BlockRoll = FMath::RandRange(0.f, 100.f);
 	if (BlockRoll < BlockChance) {
 		Damage *= BlockFactor;
+		return true;
 	}
+	return false;
 }
 
 void UExecCalc_Damage::ProcessArmor(float& Damage, float Armor, float Level) const {
@@ -94,7 +102,7 @@ void UExecCalc_Damage::ProcessArmor(float& Damage, float Armor, float Level) con
 	Damage = FMath::Clamp(Damage, 0.f, Damage);
 }
 
-void UExecCalc_Damage::ProcessCritical(float& Damage, float CriticalResistance, const FAggregatorEvaluateParameters& EvalParams,
+bool UExecCalc_Damage::ProcessCritical(float& Damage, float CriticalResistance, const FAggregatorEvaluateParameters& EvalParams,
                                        const FGameplayEffectCustomExecutionParameters& ExecutionParams) const {
 	auto CriticalChance = GetCapturedAttribute(DamageStatics().CriticalHitChanceDef, ExecutionParams, EvalParams);
 	CriticalChance -= CriticalResistance;
@@ -102,5 +110,7 @@ void UExecCalc_Damage::ProcessCritical(float& Damage, float CriticalResistance, 
 	if (CriticalRoll < CriticalChance) {
 		const auto CriticalDamage = GetCapturedAttribute(DamageStatics().CriticalHitChanceDef, ExecutionParams, EvalParams);
 		Damage = (Damage * 2.f) + CriticalDamage;
+		return true;
 	}
+	return false;
 }

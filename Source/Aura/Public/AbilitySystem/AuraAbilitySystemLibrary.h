@@ -7,6 +7,8 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+struct FAuraGameplayEffectContext;
+struct FGameplayEffectContextHandle;
 class UAbilitySystemComponent;
 class UAttributeWidgetDataController;
 class UOverlayWidgetDataController;
@@ -22,6 +24,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetDataController")
 	static UAttributeWidgetDataController* GetAttributeMenuWidgetDataController(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayEffects")
+	static FAuraGameplayEffectContext* GetEffectContext(FGameplayEffectContextHandle EffectContext);
 
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassDefaults")
 	static void InitializeDefaultAttributes(UAbilitySystemComponent* AbilitySystemComponent, ECharacterClass CharacterClass,
